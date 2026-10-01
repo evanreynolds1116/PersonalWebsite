@@ -1,0 +1,89 @@
+---
+import { Font } from 'astro:assets';
+import Footer from '../components/Footer.astro';
+import Nav from '../components/Nav.astro';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  /** Page title; the site name is appended. */
+  title: string;
+  description?: string;
+  /** Passed to the footer status line (e.g. `project-one/README.md`). */
+  footerFile?: string;
+  noindex?: boolean;
+}
+
+const { title, description = site.description, footerFile, noindex = false } = Astro.props;
+const fullTitle = `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={site.locale} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0f14" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!--
+      Runs before first paint so there is no flash of the wrong theme.
+      Order: saved choice → OS preference → dark. Keep the storage key in sync with src/lib/theme.ts.
+    -->
+    <script is:inline>
+      (() => {
+        let theme = null;
+        try {
+          theme = localStorage.getItem('theme');
+        } catch {
+          // Storage blocked: fall through to the OS preference.
+        }
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = theme;
+        if (theme === 'light') {
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fafaf7');
+        }
+      })();
+    </script>
+    <!-- Preload only the faces used above the fold: the mono headings and the body text. -->
+    <Font cssVariable="--font-jetbrains-mono" preload={[{ weight: 700 }]} />
+    <Font cssVariable="--font-geist" preload={[{ weight: 400 }]} />
+
+    <!-- Without JS, show the phone menu links inline and hide controls that need JS. -->
+    <noscript>
+      <style>
+        .theme-toggle,
+        #menu-toggle {
+          display: none !important;
+        }
+        @media (width < 48rem) {
+          #mobile-menu {
+            display: block !important;
+          }
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only z-50 rounded-lg bg-accent px-4 py-3 font-mono text-[15px] font-bold text-on-accent focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      skip to content
+    </a>
+    <Nav />
+    <main id="main" tabindex="-1" class="flex-1 focus:outline-none">
+      <slot />
+    </main>
+    <Footer file={footerFile} />
+  </body>
+</html>

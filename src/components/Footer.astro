@@ -1,0 +1,36 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  /** Right-hand "editor status" text on desktop, e.g. the file a page represents. */
+  file?: string;
+}
+
+const { file = 'utf-8 · ln 1, col 1' } = Astro.props;
+const { branch, commit } = __BUILD_INFO__;
+
+// Built as strings: Astro trims whitespace that spans lines, so separators written
+// in markup can silently disappear after formatting.
+const build = `${branch} · built from ${commit}`;
+const copyright = `© ${new Date().getFullYear()} ${site.name}`;
+const city = ` · ${site.city}`;
+const fileInfo = ` · ${file}`;
+---
+
+<!-- An editor status line. On phones the city moves to the second line. -->
+<footer class="border-t border-border bg-surface">
+  <div class="mx-auto flex max-w-content flex-col gap-1 px-5 py-3.5 font-mono text-xs text-muted md:flex-row md:flex-wrap md:justify-between md:gap-3 md:px-6 md:text-[13px]">
+    <p>
+      <span class="mr-[1ch] text-accent" aria-hidden="true">
+        ●
+      </span>
+      {build}
+      <span class="hidden md:inline">{city}</span>
+    </p>
+    <p>
+      {copyright}
+      <span class="md:hidden">{city}</span>
+      <span class="hidden md:inline">{fileInfo}</span>
+    </p>
+  </div>
+</footer>

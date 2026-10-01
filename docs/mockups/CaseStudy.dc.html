@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Case study — Project One</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:4px}
+a:focus-visible,button:focus-visible{outline:2px solid #E3B341;outline-offset:3px;border-radius:6px}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: {{t.bg}}; color: {{t.text}}; font-family: 'Geist', system-ui, sans-serif; font-size: 18px; line-height: 1.7">
+
+<header style="border-bottom: 1px solid {{t.border}}">
+<nav aria-label="Main" style="max-width: 1100px; margin: 0 auto; padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 15px">
+<a href="Main.dc.html" style="font-weight: 700"><span style="color: {{t.accent}}">~/</span>yourname</a>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px">
+<a href="Main.dc.html" style="color: {{t.text}}">projects</a>
+<a href="Main.dc.html" style="color: {{t.muted}}">resume</a>
+<a href="Main.dc.html" style="color: {{t.muted}}">services</a>
+<a href="Main.dc.html" style="color: {{t.muted}}">about</a>
+<button type="button" onClick="{{toggle}}" aria-label="Toggle light and dark theme" style="min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid {{t.border}}; border-radius: 8px; color: {{t.text}}; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+</button>
+<a href="#cta" style="padding: 10px 16px; min-height: 44px; box-sizing: border-box; display: flex; align-items: center; border-radius: 8px; background: {{t.accent}}; color: {{t.onAccent}}; font-weight: 700">hire me</a>
+</div>
+</nav>
+</header>
+
+<main style="max-width: 1100px; margin: 0 auto; padding: 0 24px">
+
+<section aria-labelledby="cs-title" style="padding: 72px 0 48px; display: flex; flex-direction: column; gap: 20px; max-width: 820px">
+<a href="Main.dc.html" style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.muted}}">← cd ../projects</a>
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 15px; color: {{t.muted}}">~/projects/project-one $ <span style="color: {{t.text}}">cat README.md</span></p>
+<h1 id="cs-title" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 52px; line-height: 1.1; letter-spacing: -0.02em">[Project One]</h1>
+<p style="margin: 0; font-size: 22px; line-height: 1.5; color: {{t.muted}}">[One sentence: what it is, who it's for, and the headline result.]</p>
+</section>
+
+<section aria-label="Project details" style="padding: 24px; border: 1px solid {{t.border}}; border-radius: 12px; background: {{t.surface}}; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px 32px; font-family: 'JetBrains Mono', monospace; font-size: 14px; line-height: 1.6">
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: {{t.muted}}">role</span><span>[Lead backend engineer]</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: {{t.muted}}">timeline</span><span>[X months, 20XX]</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: {{t.muted}}">team</span><span>[Solo / team of X]</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><span style="color: {{t.muted}}">links</span><span style="display: flex; gap: 16px"><a href="#links" style="color: {{t.accent}}">live ↗</a><a href="#links" style="color: {{t.accent}}">github ↗</a></span></div>
+</section>
+
+<figure style="margin: 40px 0 0; border: 1px solid {{t.border}}; border-radius: 12px; background: {{t.surface}}; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid {{t.border}}; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">
+<span style="width: 11px; height: 11px; border-radius: 50%; background: {{t.border}}"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: {{t.border}}"></span><span style="width: 11px; height: 11px; border-radius: 50%; background: {{t.border}}"></span><span style="margin-left: 8px">project-one/app — main screen</span>
+</div>
+<div style="height: 460px; display: flex; align-items: center; justify-content: center; background: {{t.bg}}; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.muted}}">[hero screenshot]</div>
+</figure>
+
+<section aria-label="Results" style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px">
+<div style="padding: 24px; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 40px; font-weight: 700; line-height: 1.2; color: {{t.highlight}}">[X%]</span>
+<span style="font-size: 16px; color: {{t.muted}}">[What improved, e.g. faster page loads]</span>
+</div>
+<div style="padding: 24px; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 40px; font-weight: 700; line-height: 1.2; color: {{t.highlight}}">[X]</span>
+<span style="font-size: 16px; color: {{t.muted}}">[What grew, e.g. active users]</span>
+</div>
+<div style="padding: 24px; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 40px; font-weight: 700; line-height: 1.2; color: {{t.highlight}}">[$X]</span>
+<span style="font-size: 16px; color: {{t.muted}}">[What it saved, e.g. monthly cost]</span>
+</div>
+</section>
+
+<article style="max-width: 720px; padding: 72px 0 0; display: flex; flex-direction: column; gap: 56px">
+
+<section aria-labelledby="h-problem" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 01</p>
+<h2 id="h-problem" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">The problem</h2>
+<p style="margin: 0">[What was broken, slow or missing, and who it affected. Two or three sentences with the context a reader outside the company needs.]</p>
+<p style="margin: 0">[Why it mattered: the cost of leaving it alone, in time, money or users.]</p>
+</section>
+
+<section aria-labelledby="h-role" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 02</p>
+<h2 id="h-role" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">My role</h2>
+<p style="margin: 0">[What you personally owned versus the team. Be specific: "I designed the data model and built the sync service."]</p>
+</section>
+
+<section aria-labelledby="h-approach" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 03</p>
+<h2 id="h-approach" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">Approach</h2>
+<p style="margin: 0">[How you tackled it, in plain language. Walk through the architecture at a level a hiring manager can follow.]</p>
+<figure style="margin: 8px 0; border: 1px solid {{t.border}}; border-radius: 12px; background: {{t.surface}}; overflow: hidden">
+<div style="padding: 10px 16px; border-bottom: 1px solid {{t.border}}; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">architecture.svg</div>
+<div style="height: 280px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.muted}}">[architecture diagram]</div>
+<figcaption style="padding: 12px 16px; border-top: 1px solid {{t.border}}; font-size: 15px; color: {{t.muted}}">[One-line caption explaining the diagram.]</figcaption>
+</figure>
+</section>
+
+<section aria-labelledby="h-decisions" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 04</p>
+<h2 id="h-decisions" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">Key decisions</h2>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 16px">
+<li style="padding: 20px; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700"><span style="color: {{t.accent}}">→</span> [Decision one, e.g. chose X over Y]</span>
+<span style="font-size: 16px; color: {{t.muted}}">[Why, and what you gave up in exchange.]</span>
+</li>
+<li style="padding: 20px; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700"><span style="color: {{t.accent}}">→</span> [Decision two]</span>
+<span style="font-size: 16px; color: {{t.muted}}">[Why, and what you gave up in exchange.]</span>
+</li>
+</ul>
+</section>
+
+<section aria-labelledby="h-results" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 05</p>
+<h2 id="h-results" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">Results</h2>
+<p style="margin: 0">[What changed after launch, with the numbers from the cards above and how you measured them.]</p>
+<p style="margin: 0">[What you'd do differently next time. One honest sentence here builds a lot of trust.]</p>
+</section>
+
+<section id="links" aria-labelledby="h-stack" style="display: flex; flex-direction: column; gap: 14px">
+<p style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: {{t.accent}}">## 06</p>
+<h2 id="h-stack" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; line-height: 1.3">Stack &amp; links</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 14px">
+<span style="padding: 6px 12px; border: 1px solid {{t.border}}; border-radius: 6px; color: {{t.accent}}">--react</span>
+<span style="padding: 6px 12px; border: 1px solid {{t.border}}; border-radius: 6px; color: {{t.accent}}">--node</span>
+<span style="padding: 6px 12px; border: 1px solid {{t.border}}; border-radius: 6px; color: {{t.accent}}">--postgres</span>
+<span style="padding: 6px 12px; border: 1px solid {{t.border}}; border-radius: 6px; color: {{t.accent}}">--aws</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 15px">
+<a href="#links" style="padding: 12px 20px; min-height: 48px; box-sizing: border-box; display: flex; align-items: center; border-radius: 8px; border: 1px solid {{t.border}}">view live site ↗</a>
+<a href="#links" style="padding: 12px 20px; min-height: 48px; box-sizing: border-box; display: flex; align-items: center; border-radius: 8px; border: 1px solid {{t.border}}">source on github ↗</a>
+</div>
+</section>
+
+</article>
+
+<nav aria-label="More projects" style="margin-top: 88px; padding: 24px 0; border-top: 1px solid {{t.border}}; border-bottom: 1px solid {{t.border}}; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 15px">
+<a href="Main.dc.html" style="color: {{t.muted}}">← all projects</a>
+<a href="#top" style="color: {{t.text}}">next: [Project Two] →</a>
+</nav>
+
+<section id="cta" aria-labelledby="cs-cta" style="margin: 72px 0 96px; padding: 48px; border: 1px solid {{t.border}}; border-radius: 16px; background: {{t.surface}}; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="cs-cta" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700">Want something like this built<span style="color: {{t.accent}}">?</span></h2>
+<p style="margin: 0; color: {{t.muted}}">Tell me about your team or project.</p>
+</div>
+<a href="#cta" style="padding: 12px 20px; min-height: 48px; box-sizing: border-box; display: flex; align-items: center; border-radius: 8px; background: {{t.accent}}; color: {{t.onAccent}}; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700">get in touch</a>
+</section>
+
+</main>
+
+<footer style="border-top: 1px solid {{t.border}}; background: {{t.surface}}">
+<div style="max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: {{t.muted}}">
+<span><span style="color: {{t.accent}}">●</span> main · built from a1b2c3 · [your city]</span>
+<span>© 2026 [Your Name] · project-one/README.md</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":3900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { dark: null };
+  }
+  renderVals() {
+    var dark = this.state.dark === null ? (this.props.dark ?? true) : this.state.dark;
+    var t = dark
+      ? { bg: '#0B0F14', surface: '#111820', border: '#1F2A36', text: '#E6EDF3', muted: '#8B98A5', accent: '#7EE787', highlight: '#E3B341', onAccent: '#0B0F14' }
+      : { bg: '#FAFAF7', surface: '#FFFFFF', border: '#E3E3DE', text: '#1B1F24', muted: '#5E6770', accent: '#1A7F37', highlight: '#9A6700', onAccent: '#FFFFFF' };
+    var self = this;
+    return {
+      t: t,
+      toggle: function () { self.setState({ dark: !dark }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

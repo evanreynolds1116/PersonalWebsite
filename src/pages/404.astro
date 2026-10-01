@@ -1,0 +1,85 @@
+---
+import Button from '../components/Button.astro';
+import Container from '../components/Container.astro';
+import { navLinks } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// The static 404 page can't know the requested path at build time;
+// a script swaps in the real path, with this as the no-JS fallback.
+const fallbackPath = '/that-page';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="This page doesn't exist. Head back home or browse the projects."
+  footerFile="zsh · exit 127"
+  noindex
+>
+  <Container as="section" aria-labelledby="nf-title" class="py-12 md:py-24">
+    <div class="flex max-w-reading flex-col gap-6">
+      <p class="font-mono text-sm text-muted md:text-[15px]">
+        ~ ${' '}
+        <span class="text-text">
+          cd{' '}
+          <span class="wrap-anywhere" data-path>
+            {fallbackPath}
+          </span>
+        </span>
+      </p>
+
+      <h1
+        id="nf-title"
+        class="font-mono text-[26px] leading-tight font-bold tracking-[-0.02em] md:text-[40px]"
+      >
+        <span class="text-muted">zsh:</span> command not found:{' '}
+        <span class="wrap-anywhere text-highlight" data-path>
+          {fallbackPath}
+        </span>
+        <span class="cursor text-accent" aria-hidden="true">
+          _
+        </span>
+      </h1>
+
+      <p class="text-muted md:text-xl">
+        That page doesn't exist, or it has moved. Try one of these instead.
+      </p>
+
+      <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
+        <Button href="/">cd ~ (home)</Button>
+        <Button href="/contact" variant="ghost">
+          get in touch →
+        </Button>
+      </div>
+
+      <nav aria-label="Suggested pages" class="mt-4">
+        <ul class="border-t border-border font-mono text-base">
+          {navLinks.map(({ label, href }) => (
+            <li class="border-b border-border">
+              <a href={href} class="flex min-h-11 items-center py-3">
+                <span class="text-accent" aria-hidden="true">
+                  $&nbsp;
+                </span>
+                cd {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  const path = decodeURIComponentSafe(window.location.pathname);
+  document.querySelectorAll<HTMLElement>('[data-path]').forEach((el) => {
+    el.textContent = path;
+  });
+
+  function decodeURIComponentSafe(value: string): string {
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return value;
+    }
+  }
+</script>

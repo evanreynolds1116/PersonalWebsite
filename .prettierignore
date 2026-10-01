@@ -1,0 +1,6 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+# Planning docs and design-canvas exports are kept exactly as exported.
+docs/

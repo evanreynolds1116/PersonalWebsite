@@ -1,0 +1,35 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+  href: string;
+  /** `primary` is the accent-filled call to action; `ghost` is the outlined secondary. */
+  variant?: 'primary' | 'ghost';
+  /** `sm` is the 44px nav size; `md` is the 48px size used in page content. */
+  size?: 'sm' | 'md';
+};
+
+const { variant = 'primary', size = 'md', class: className, ...attrs } = Astro.props;
+
+const variants = {
+  primary: 'bg-accent text-on-accent font-bold',
+  ghost: 'border border-border text-text',
+};
+
+const sizes = {
+  sm: 'min-h-11 px-4 py-2.5',
+  md: 'min-h-12 px-5 py-3',
+};
+---
+
+<a
+  class:list={[
+    'inline-flex items-center justify-center rounded-lg font-mono text-[15px] leading-normal',
+    variants[variant],
+    sizes[size],
+    className,
+  ]}
+  {...attrs}
+>
+  <slot />
+</a>

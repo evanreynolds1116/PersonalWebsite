@@ -1,0 +1,7 @@
+# Keep LF everywhere so Prettier and .editorconfig agree on every OS.
+* text=auto eol=lf
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.avif binary
+*.webp binary
