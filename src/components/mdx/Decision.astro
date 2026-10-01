@@ -1,0 +1,21 @@
+---
+interface Props {
+  /** The decision, e.g. "Chose Postgres over DynamoDB". */
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!-- One key decision: the choice, then why and what it cost. -->
+<li class="flex flex-col gap-1.5 rounded-xl border border-border p-5">
+  <span class="font-mono text-base leading-snug font-bold">
+    <span class="text-accent" aria-hidden="true">
+      →{' '}
+    </span>
+    {title}
+  </span>
+  <div class="text-base text-muted [&>p]:m-0">
+    <slot />
+  </div>
+</li>

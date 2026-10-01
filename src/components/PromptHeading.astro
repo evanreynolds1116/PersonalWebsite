@@ -1,0 +1,28 @@
+---
+interface Props {
+  /** Working directory shown muted, e.g. `~/projects`. */
+  path: string;
+  /** The command, e.g. `ls --featured`. */
+  command: string;
+  /** Shorter command for phones, e.g. `ls`. Defaults to `command`. */
+  commandShort?: string;
+  id: string;
+  as?: 'h1' | 'h2';
+  class?: string;
+}
+
+const { path, command, commandShort = command, id, as: Tag = 'h2', class: className } = Astro.props;
+---
+
+<!-- A section heading written as a shell prompt: `~/projects $ ls --featured`. -->
+<Tag id={id} class:list={['font-mono text-xl leading-snug font-medium md:text-[28px]', className]}>
+  <span class="text-muted">{`${path} $ `}</span>
+  {commandShort === command ? (
+    command
+  ) : (
+    <>
+      <span class="md:hidden">{commandShort}</span>
+      <span class="hidden md:inline">{command}</span>
+    </>
+  )}
+</Tag>

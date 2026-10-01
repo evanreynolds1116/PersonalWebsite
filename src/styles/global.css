@@ -106,6 +106,110 @@
   .cursor {
     animation: blink 1.1s steps(1) infinite;
   }
+
+  /*
+   * Long-form reading (case-study bodies). Styles only direct children so MDX
+   * components can opt out with .not-prose. Each `## Heading` is numbered
+   * automatically as `## 01`, `## 02`… via a counter.
+   */
+  .prose {
+    counter-reset: section;
+    line-height: 1.7;
+  }
+
+  .prose > * + * {
+    margin-top: 14px;
+  }
+
+  .prose > h2 {
+    counter-increment: section;
+    margin-top: 48px;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .prose > h2:first-child {
+    margin-top: 0;
+  }
+
+  .prose > h2::before {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--accent);
+    content: '## ' counter(section, decimal-leading-zero);
+    /* Decorative: hidden from screen readers where alt text for content is supported. */
+    content: '## ' counter(section, decimal-leading-zero) / '';
+  }
+
+  .prose > h3 {
+    margin-top: 32px;
+    font-family: var(--font-mono);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .prose > ul:not(.not-prose),
+  .prose > ol {
+    padding-left: 1.25em;
+  }
+
+  .prose > ul:not(.not-prose) {
+    list-style: disc;
+  }
+
+  .prose > ol {
+    list-style: decimal;
+  }
+
+  .prose > :is(ul:not(.not-prose), ol) > li + li {
+    margin-top: 6px;
+  }
+
+  .prose > :is(ul:not(.not-prose), ol) > li::marker {
+    color: var(--muted);
+  }
+
+  .prose a:not(.not-prose a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .prose :not(pre) > code {
+    padding: 0.1em 0.35em;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  .prose > pre {
+    overflow-x: auto;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+  }
+
+  .prose > blockquote {
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+    color: var(--muted);
+  }
+
+  @media (width >= 48rem) {
+    .prose > h2 {
+      margin-top: 56px;
+      font-size: 28px;
+    }
+  }
 }
 
 @keyframes blink {
@@ -116,6 +220,37 @@
   50%,
   100% {
     opacity: 0;
+  }
+}
+
+/*
+ * Print (and the Phase 3 resume PDF): always the light palette on white paper.
+ * Hide site chrome with Tailwind's `print:hidden` on the elements themselves.
+ */
+@media print {
+  :root,
+  :root[data-theme] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --border: #e3e3de;
+    --text: #1b1f24;
+    --muted: #5e6770;
+    --accent: #1a7f37;
+    --highlight: #9a6700;
+    --on-accent: #ffffff;
+    color-scheme: light;
+  }
+
+  @page {
+    margin: 14mm 16mm;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  .cursor {
+    display: none;
   }
 }
 

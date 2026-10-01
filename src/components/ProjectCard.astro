@@ -1,0 +1,44 @@
+---
+import { projectHref, type Project } from '../lib/projects';
+import Flags from './Flags.astro';
+import Screenshot from './Screenshot.astro';
+import WindowFrame from './WindowFrame.astro';
+
+interface Props {
+  project: Project;
+  /** Heading level inside the page's outline. */
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, outcome, stack, windowTitle, links, cover, coverAlt } = project.data;
+const titleId = `project-${project.id}`;
+---
+
+<WindowFrame
+  as="article"
+  title={windowTitle}
+  size="sm"
+  aria-labelledby={titleId}
+  class="flex flex-col"
+  data-tags={stack.join(' ')}
+>
+  <Screenshot src={cover} alt={coverAlt} />
+  <div class="flex grow flex-col gap-2.5 p-5 md:gap-3 md:p-6">
+    <Heading id={titleId} class="font-mono text-[19px] leading-snug font-bold md:text-xl">
+      {title}
+    </Heading>
+    <p class="text-base text-muted">{outcome}</p>
+    <Flags tags={stack} variant="plain" label="Stack" />
+    <div class="mt-auto flex gap-3 font-mono text-sm md:gap-5 md:pt-2">
+      <a href={projectHref(project)} class="flex min-h-11 items-center text-text md:min-h-0">
+        case study<span class="sr-only">: {title}</span>&nbsp;→
+      </a>
+      {links.github && (
+        <a href={links.github} class="flex min-h-11 items-center text-muted md:min-h-0">
+          github<span class="sr-only">: {title}</span>
+        </a>
+      )}
+    </div>
+  </div>
+</WindowFrame>

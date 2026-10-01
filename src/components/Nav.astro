@@ -8,7 +8,7 @@ const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`)
 ---
 
 <!-- Sticky on phones (as in the phone mockup), static on desktop. -->
-<header class="sticky top-0 z-20 border-b border-border bg-bg md:static">
+<header class="sticky top-0 z-20 border-b border-border bg-bg md:static print:hidden">
   <nav
     aria-label="Main"
     class="mx-auto flex max-w-content items-center justify-between gap-3 px-5 py-2.5 font-mono text-[15px] md:gap-4 md:px-6 md:py-5"

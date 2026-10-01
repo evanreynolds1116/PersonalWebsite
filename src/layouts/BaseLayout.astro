@@ -6,8 +6,8 @@ import { site } from '../config/site';
 import '../styles/global.css';
 
 interface Props {
-  /** Page title; the site name is appended. */
-  title: string;
+  /** Page title; the site name is appended. Omit on the home page for "Name · Role". */
+  title?: string;
   description?: string;
   /** Passed to the footer status line (e.g. `project-one/README.md`). */
   footerFile?: string;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, description = site.description, footerFile, noindex = false } = Astro.props;
-const fullTitle = `${title} · ${site.name}`;
+const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 

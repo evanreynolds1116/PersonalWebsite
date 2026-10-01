@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import { readBuildInfo } from './config/build-info.mjs';
 
@@ -7,6 +8,7 @@ import { readBuildInfo } from './config/build-info.mjs';
 export default defineConfig({
   // Placeholder until the domain is decided (Phase 4). Used for canonical URLs and the sitemap.
   site: 'https://yourname.dev',
+  integrations: [mdx()],
   // Fonts are downloaded from Fontsource at build time and served from this site,
   // subset to Latin, with metric-matched fallbacks to avoid layout shift.
   fonts: [

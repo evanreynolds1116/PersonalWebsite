@@ -1,0 +1,306 @@
+---
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const domain = Astro.site?.host ?? site.handle;
+
+/** Inquiry types; each routes to a clear email subject line. */
+const inquiryTypes = [
+  { value: 'job', label: 'Job', subject: `[Job] New opportunity via ${domain}` },
+  {
+    value: 'freelance',
+    label: 'Freelance',
+    subject: `[Freelance] Project inquiry via ${domain}`,
+  },
+  { value: 'other', label: 'Other', subject: `[Other] Message via ${domain}` },
+] as const;
+
+const directLinks = [
+  { label: 'email', href: `mailto:${site.email}`, text: site.email },
+  site.linkedin && {
+    label: 'linkedin',
+    href: site.linkedin,
+    text: site.linkedin.replace(/^https?:\/\/(www\.)?/, ''),
+  },
+  site.github && {
+    label: 'github',
+    href: site.github,
+    text: site.github.replace(/^https?:\/\//, ''),
+  },
+  site.bookingUrl && { label: 'book a call', href: site.bookingUrl, text: 'pick a time ↗' },
+].filter((link): link is { label: string; href: string; text: string } => Boolean(link));
+
+const inputClass =
+  'w-full rounded-lg border border-border bg-bg px-4 py-3 text-base text-text placeholder:text-muted aria-invalid:border-highlight';
+const labelClass = 'font-mono text-sm';
+const errorClass = 'font-mono text-[13px] text-highlight empty:hidden';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Hiring for a role or planning a project? Send a message."
+  footerFile="message.txt"
+>
+  <Container class="pb-14 md:pb-24">
+    <PageHeader
+      path="~/contact"
+      command="./send-message"
+      title="Get in touch"
+      lead={`Hiring for a role or planning a project? ${site.replyTime}`}
+    />
+
+    <div class="grid gap-10 md:grid-cols-[minmax(0,640px)_minmax(220px,1fr)] md:gap-14">
+      <div class="rounded-xl border border-border bg-surface p-5 md:p-8">
+        <form
+          id="contact-form"
+          action={site.formEndpoint}
+          method="POST"
+          class="flex flex-col gap-6"
+          aria-describedby="form-note"
+          data-fallback-email={site.email}
+        >
+          <fieldset class="flex flex-col gap-3">
+            <legend class:list={[labelClass, 'mb-3']}>What's this about?</legend>
+            <div class="grid gap-3 md:grid-cols-3">
+              {inquiryTypes.map((type, index) => (
+                <label class="flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border border-border px-4 font-mono text-sm has-checked:border-accent has-checked:text-accent">
+                  <input
+                    type="radio"
+                    name="inquiry"
+                    value={type.value}
+                    data-subject={type.subject}
+                    checked={index === 0}
+                    class="size-4 shrink-0 accent-accent"
+                  />
+                  {type.label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- Set from the inquiry type by the script; this default covers no-JS submissions. -->
+          <input type="hidden" name="_subject" value={`New message via ${domain}`} />
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="flex flex-col gap-2">
+              <label for="name" class={labelClass}>
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                aria-describedby="name-error"
+                class={inputClass}
+              />
+              <p id="name-error" class={errorClass}></p>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="email" class={labelClass}>
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                aria-describedby="email-error"
+                class={inputClass}
+              />
+              <p id="email-error" class={errorClass}></p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="company" class={labelClass}>
+              Company or project <span class="text-muted">(optional)</span>
+            </label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+              class={inputClass}
+            />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="message" class={labelClass}>
+              Message
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              required
+              aria-describedby="message-hint message-error"
+              class:list={[inputClass, 'min-h-40 resize-y']}
+            ></textarea>
+            <p id="message-hint" class="text-[15px] text-muted">
+              For projects: what you're building, rough timeline and budget.
+            </p>
+            <p id="message-error" class={errorClass}></p>
+          </div>
+
+          <!-- Honeypot: hidden from people and screen readers; bots that fill it are dropped by Formspree. -->
+          <div class="absolute -left-[9999px]" aria-hidden="true">
+            <label for="website">Leave this field empty</label>
+            <input id="website" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="flex flex-col gap-4 md:flex-row md:items-center">
+            <button
+              type="submit"
+              class="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-lg bg-accent px-5 py-3 font-mono text-[15px] font-bold text-on-accent disabled:cursor-wait disabled:opacity-70"
+            >
+              send message
+            </button>
+            <p id="form-note" class="text-[15px] text-muted">
+              Your details are only used to reply to you.
+            </p>
+          </div>
+
+          <p id="form-error" role="alert" class="font-mono text-sm text-highlight empty:hidden"></p>
+        </form>
+
+        <div
+          id="form-success"
+          hidden
+          tabindex="-1"
+          class="flex flex-col gap-3 py-4 focus:outline-none"
+        >
+          <p class="font-mono text-sm text-muted">
+            <span class="text-accent">$</span> ./send-message{' '}
+            <span class="text-accent">✓ sent</span>
+          </p>
+          <h2 class="font-mono text-2xl font-bold">Thanks, message received.</h2>
+          <p class="text-muted">{site.replyTime} Check your inbox for my reply.</p>
+        </div>
+      </div>
+
+      <aside aria-labelledby="direct-title" class="flex flex-col gap-4">
+        <h2 id="direct-title" class="font-mono text-sm text-muted">
+          ~/contact $ <span class="text-text">ls</span>
+        </h2>
+        <dl class="flex flex-col border-t border-border">
+          {directLinks.map((link) => (
+            <div class="flex flex-col gap-1 border-b border-border py-4">
+              <dt class="font-mono text-[13px] text-muted">{link.label}</dt>
+              <dd>
+                <a href={link.href} class="font-mono text-[15px] break-all text-accent">
+                  {link.text}
+                </a>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('form-success');
+  const formError = document.getElementById('form-error');
+
+  const messages: Record<string, Partial<Record<keyof ValidityState, string>>> = {
+    name: { valueMissing: 'Please enter your name.' },
+    email: {
+      valueMissing: 'Please enter your email so I can reply.',
+      typeMismatch: "That email address doesn't look right.",
+    },
+    message: { valueMissing: 'Please write a short message.' },
+  };
+
+  type Field = HTMLInputElement | HTMLTextAreaElement;
+
+  function errorFor(field: Field): string {
+    const custom = messages[field.name] ?? {};
+    for (const key of Object.keys(custom) as (keyof ValidityState)[]) {
+      if (field.validity[key]) return custom[key] ?? field.validationMessage;
+    }
+    return field.validationMessage;
+  }
+
+  function showError(field: Field, message: string) {
+    field.setAttribute('aria-invalid', String(Boolean(message)));
+    const el = document.getElementById(`${field.id}-error`);
+    if (el) el.textContent = message ? `! ${message}` : '';
+  }
+
+  if (form && success && formError) {
+    // We validate in-page with inline messages; without JS the browser's built-in validation runs.
+    form.noValidate = true;
+
+    const subject = form.querySelector<HTMLInputElement>('input[name="_subject"]');
+    const radios = [...form.querySelectorAll<HTMLInputElement>('input[name="inquiry"]')];
+    const fields = [...form.querySelectorAll<Field>('input[required], textarea[required]')];
+
+    const syncSubject = () => {
+      const checked = radios.find((r) => r.checked);
+      if (subject && checked?.dataset.subject) subject.value = checked.dataset.subject;
+    };
+    radios.forEach((radio) => radio.addEventListener('change', syncSubject));
+
+    // ?type=freelance preselects the inquiry type (used by "start a project" links).
+    const preset = new URLSearchParams(window.location.search).get('type');
+    const match = radios.find((r) => r.value === preset);
+    if (match) match.checked = true;
+    syncSubject();
+
+    // Re-validate a field once it has shown an error, as the visitor fixes it.
+    fields.forEach((field) =>
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') showError(field, errorFor(field));
+      }),
+    );
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      formError.textContent = '';
+
+      const invalid = fields.filter((field) => {
+        const message = field.validity.valid ? '' : errorFor(field);
+        showError(field, message);
+        return Boolean(message);
+      });
+      if (invalid.length > 0) {
+        invalid[0]?.focus();
+        return;
+      }
+
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const label = button?.textContent ?? '';
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'sending…';
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(`Form service responded ${response.status}`);
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+      } catch {
+        const email = form.dataset.fallbackEmail;
+        formError.textContent = `! Sorry, that didn't send. Please try again, or email me directly${email ? ` at ${email}` : ''}.`;
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = label;
+        }
+      }
+    });
+  }
+</script>

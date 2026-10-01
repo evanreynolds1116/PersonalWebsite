@@ -1,0 +1,111 @@
+---
+import Button from '../../components/Button.astro';
+import Container from '../../components/Container.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { projectInquiryHref } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allTags, getProjects } from '../../lib/projects';
+
+const projects = await getProjects();
+const tags = allTags(projects);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Case studies: the problem, my role, the decisions and the measurable results."
+  footerFile="projects/"
+>
+  <Container>
+    <PageHeader
+      path="~/projects"
+      command="ls"
+      title="Projects"
+      lead="[One line on the kind of work below, e.g. backend systems, internal tools and open source.]"
+    />
+
+    <!-- Filter bar: revealed by the script, so without JS every project simply shows. -->
+    <div id="project-filter" hidden class="mb-8 flex flex-col gap-3">
+      <p id="filter-label" class="font-mono text-sm text-muted">
+        filter:
+      </p>
+      <div
+        role="group"
+        aria-labelledby="filter-label"
+        class="flex flex-wrap gap-2 font-mono text-[13px] md:text-sm"
+      >
+        {['all', ...tags].map((tag) => (
+          <button
+            type="button"
+            data-filter={tag}
+            aria-pressed={tag === 'all' ? 'true' : 'false'}
+            class="min-h-11 cursor-pointer rounded-md border border-border px-3 text-muted aria-pressed:border-accent aria-pressed:text-accent"
+          >
+            {`--${tag}`}
+          </button>
+        ))}
+      </div>
+      <p id="filter-status" role="status" class="font-mono text-[13px] text-muted"></p>
+    </div>
+
+    <div id="project-grid" class="grid gap-6 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+      {projects.map((project) => (
+        <ProjectCard project={project} headingLevel="h2" />
+      ))}
+    </div>
+
+    <CtaBand
+      id="cta"
+      title="Want something like this built"
+      punctuation="?"
+      text="Tell me about your team or project."
+      class="my-14 md:mt-[88px] md:mb-24"
+    >
+      <Button href={projectInquiryHref}>start a project</Button>
+    </CtaBand>
+  </Container>
+</BaseLayout>
+
+<script>
+  const filter = document.getElementById('project-filter');
+  const status = document.getElementById('filter-status');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const cards = [...document.querySelectorAll<HTMLElement>('#project-grid > [data-tags]')];
+
+  function apply(tag: string, updateUrl: boolean) {
+    if (!buttons.some((b) => b.dataset.filter === tag)) tag = 'all';
+
+    let shown = 0;
+    for (const card of cards) {
+      const match = tag === 'all' || (card.dataset.tags ?? '').split(' ').includes(tag);
+      card.hidden = !match;
+      if (match) shown++;
+    }
+    for (const button of buttons) {
+      button.setAttribute('aria-pressed', String(button.dataset.filter === tag));
+    }
+    if (status) {
+      const noun = cards.length === 1 ? 'project' : 'projects';
+      status.textContent =
+        tag === 'all'
+          ? `${cards.length} ${noun}`
+          : `${shown} of ${cards.length} ${noun} use --${tag}`;
+    }
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (tag === 'all') url.searchParams.delete('tag');
+      else url.searchParams.set('tag', tag);
+      history.replaceState(null, '', url);
+    }
+  }
+
+  if (filter && cards.length > 1) {
+    filter.hidden = false;
+    for (const button of buttons) {
+      button.addEventListener('click', () => apply(button.dataset.filter ?? 'all', true));
+    }
+    // Shareable filtered views: /projects?tag=go
+    apply(new URLSearchParams(window.location.search).get('tag') ?? 'all', false);
+  }
+</script>
