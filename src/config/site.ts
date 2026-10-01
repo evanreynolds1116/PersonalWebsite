@@ -27,6 +27,12 @@ export const site = {
    * paste its URL here; until then submissions show the error state.
    */
   formEndpoint: 'https://formspree.io/f/[your-form-id]',
+  /**
+   * Cloudflare Web Analytics site token (cookie-free, so no consent banner).
+   * Dashboard → Analytics & Logs → Web Analytics → add site → copy the token
+   * from the snippet. Not a secret: it ships in every page. Unset = no analytics.
+   */
+  cloudflareAnalyticsToken: undefined as string | undefined,
 } as const;
 
 /** The `$ whoami` card in the home hero. */

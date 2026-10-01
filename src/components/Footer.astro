@@ -27,10 +27,24 @@ const fileInfo = ` · ${file}`;
       {build}
       <span class="hidden md:inline">{city}</span>
     </p>
-    <p>
-      {copyright}
-      <span class="md:hidden">{city}</span>
-      <span class="hidden md:inline">{fileInfo}</span>
-    </p>
+    <div class="flex items-center gap-3">
+      <p>
+        {copyright}
+        <span class="md:hidden">{city}</span>
+        <span class="hidden md:inline">{fileInfo}</span>
+      </p>
+      <!-- Opens the command palette; revealed by its script, desktop only (it's keyboard-first). -->
+      <button
+        type="button"
+        data-cmdk-open
+        hidden
+        class="hidden cursor-pointer items-center rounded border border-border px-1.5 py-0.5 text-muted hover:text-text md:inline-flex"
+      >
+        <span class="sr-only">Open command palette, shortcut</span>
+        <kbd data-cmdk-key class="font-mono">
+          ⌘K
+        </kbd>
+      </button>
+    </div>
   </div>
 </footer>

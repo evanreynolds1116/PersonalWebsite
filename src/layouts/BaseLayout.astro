@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import CommandPalette from '../components/CommandPalette.astro';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
 import { site } from '../config/site';
@@ -30,6 +31,7 @@ const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const canonical = new URL(pathname, Astro.site);
 // Generated after the build by scripts/postbuild.mjs from src/pages/og-src.
 const ogImage = new URL(`/og/${ogKey(pathname)}.png`, Astro.site);
+const analyticsToken = import.meta.env.PROD ? site.cloudflareAnalyticsToken : undefined;
 ---
 
 <!doctype html>
@@ -62,6 +64,16 @@ const ogImage = new URL(`/og/${ogKey(pathname)}.png`, Astro.site);
 
     <!-- Page-specific head content, e.g. JSON-LD on the home page. -->
     <slot name="head" />
+
+    <!-- Cookie-free analytics, production builds only (token in src/config/site.ts). -->
+    {analyticsToken && (
+      <script
+        is:inline
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: analyticsToken })}
+      />
+    )}
 
     <!--
       Runs before first paint so there is no flash of the wrong theme.
@@ -115,5 +127,6 @@ const ogImage = new URL(`/og/${ogKey(pathname)}.png`, Astro.site);
       <slot />
     </main>
     <Footer file={footerFile} />
+    <CommandPalette />
   </body>
 </html>

@@ -4,7 +4,7 @@ Source for my personal site: a portfolio, resume and freelance page for a softwa
 
 Built with [Astro](https://astro.build), TypeScript (strict) and [Tailwind CSS](https://tailwindcss.com) v4. Pages are static HTML, and JavaScript ships only for small enhancements: the theme toggle, the mobile menu, the projects filter, the contact form and the 404 path.
 
-> **Status: Phase 3 (freelance & polish).** All pages are built: home, projects and case studies, resume (with a generated PDF), services, about, contact, uses and the 404. Every page has share images, metadata and a sitemap entry, and scores 100 on all Lighthouse categories (mobile). Content is placeholder text in `[brackets]`. See [`docs/website-plan.md`](docs/website-plan.md) for the full plan and build phases.
+> **Status: Phase 4 (launch-ready).** All pages are built and score 100 on all Lighthouse categories (mobile). GitHub Actions builds every push and pull request and deploys to Cloudflare Pages once it is connected; see [Deploying](#deploying) and the [launch checklist](#launch-checklist). Content is still placeholder text in `[brackets]`. See [`docs/website-plan.md`](docs/website-plan.md) for the full plan.
 
 ## Running it
 
@@ -31,11 +31,13 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
 ## Project structure
 
 ```text
+├── .github/workflows/
+│   └── deploy.yml            CI: lint, type-check, build; deploy to Cloudflare Pages
 ├── astro.config.mjs          Astro config: MDX, fonts, Tailwind, build-info injection
 ├── config/
 │   └── build-info.mjs        Reads branch + commit for the footer at build time (runs in Node)
 ├── docs/                     Planning docs and approved mockups (not part of the build)
-├── public/                   Static files copied as-is (favicon)
+├── public/                   Static files copied as-is: favicon, _headers (Cloudflare response headers)
 ├── scripts/
 │   └── postbuild.mjs         Share images, resume PDF and output checks (runs after astro build)
 └── src/
@@ -44,6 +46,7 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
     │   ├── AvailabilityBadge.astro
     │   ├── Button.astro        Primary / ghost link-button (44px nav size, 48px content size)
     │   ├── Container.astro     The 1100px content column with phone/desktop gutters
+    │   ├── CommandPalette.astro Cmd+K / Ctrl+K palette
     │   ├── CtaBand.astro       "Let's build something." call-to-action band
     │   ├── Flags.astro         Stack tags as --flags (boxed or plain)
     │   ├── Footer.astro        Editor status-line footer
@@ -128,7 +131,7 @@ The blinking cursors (`.cursor`) and any other animation stop under `prefers-red
 
 ### Footer build info
 
-The status line shows the branch and short commit hash of the build: `main · built from a1b2c3d`. `config/build-info.mjs` reads them from Cloudflare Pages or Vercel environment variables, then from local git, and the result is injected as `__BUILD_INFO__` via Vite's `define`. Outside a git repo it shows `built from dev`.
+The status line shows the branch and short commit hash of the build: `main · built from a1b2c3d`. `config/build-info.mjs` reads them from `BUILD_BRANCH` / `BUILD_COMMIT` (set by CI), then from local git, and the result is injected as `__BUILD_INFO__` via Vite's `define`. Outside a git repo it shows `built from dev`.
 
 ### Build output
 
@@ -144,9 +147,48 @@ Chromium has to be installed once per machine (`npx playwright install chromium`
 
 Every page has a unique title and description, a canonical URL, Open Graph and Twitter/X card tags with its own image, and an entry in `sitemap.xml` (the 404 is `noindex`). `robots.txt` points to the sitemap. The home page includes JSON-LD `Person` data built from `resume.json`.
 
+### Security headers and CSP
+
+Astro generates a Content-Security-Policy `<meta>` tag on every page (`security.csp` in `astro.config.mjs`), hashing the site's own inline scripts and styles. Only two external origins are allowed: Cloudflare's analytics beacon and Formspree. [`public/_headers`](public/_headers) adds the headers a `<meta>` tag can't carry (`frame-ancestors`, HSTS, `nosniff`, referrer and permissions policies), long-term caching for hashed assets, and `noindex` on `*.pages.dev` URLs so only your domain shows in search. CSP isn't applied in `npm run dev`; test it with `npm run build && npm run preview`.
+
+### Analytics
+
+[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/) is cookie-free, so it needs no consent banner. Set `cloudflareAnalyticsToken` in `src/config/site.ts` and the beacon loads on production builds only. Unset, the site makes no third-party requests at all.
+
+### Command palette
+
+Press <kbd>⌘K</kbd> / <kbd>Ctrl K</kbd> (or click the `⌘K` chip in the footer on desktop) to jump to any page or project, download the resume, copy your email or switch theme. It's built on `<dialog>` for focus handling, with a combobox/listbox pattern for screen readers. It's an extra: everything in it is also reachable through the normal navigation.
+
 ### Without JavaScript
 
 The site still works. On phones the menu links render inline and the menu and theme buttons are hidden, and the 404 page shows a generic path.
+
+## Deploying
+
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs on every push and pull request: install, lint, format check, then `npm run build` (type-check, site, share images, resume PDF). If Cloudflare is configured it then deploys `dist/`: pushes to `main` go to production, and each pull request gets its own preview URL, linked from the PR's deployments. The build runs in GitHub Actions rather than on Cloudflare because it needs Chromium.
+
+Until the repository variable below is set, the workflow builds and checks but skips the deploy.
+
+### One-time Cloudflare setup
+
+1. **Create the Pages project** (Cloudflare dashboard → Workers & Pages → Create → Pages → _Direct Upload_), named e.g. `yourname-site`, with production branch `main`. Or from a terminal: `npx wrangler pages project create yourname-site --production-branch main`.
+2. **Create an API token** (My Profile → API Tokens → Create token → Custom), with the permission _Account → Cloudflare Pages → Edit_, scoped to your account.
+3. **Add them to GitHub** (repo → Settings → Secrets and variables → Actions):
+   - Secret `CLOUDFLARE_API_TOKEN`: the token from step 2.
+   - Secret `CLOUDFLARE_ACCOUNT_ID`: shown in the dashboard sidebar (Workers & Pages → Account ID).
+   - Variable `CLOUDFLARE_PAGES_PROJECT`: the project name from step 1.
+4. Push to `main` (or re-run the workflow). The site is live at `https://<project>.pages.dev`.
+
+### Launch checklist
+
+These need your accounts or your content, so they're manual:
+
+- [ ] **Domain:** buy it, add it under the Pages project → Custom domains (Cloudflare sets up DNS and HTTPS), then set `SITE_URL` in `astro.config.mjs` and `handle` in `src/config/site.ts`.
+- [ ] **Analytics:** Cloudflare dashboard → Web Analytics → add the domain, then paste the token into `cloudflareAnalyticsToken` in `src/config/site.ts`.
+- [ ] **Contact form:** create a Formspree form for your email and paste its endpoint into `formEndpoint`. Send yourself a test of each inquiry type.
+- [ ] **Content:** replace every `[bracketed]` placeholder (see [Editing content](#editing-content)), add screenshots and a photo, and only publish testimonials you have permission for.
+- [ ] **Search:** add the domain in Google Search Console and submit `/sitemap.xml`.
+- [ ] **Check the live site:** run Lighthouse on the production URL and share a page on LinkedIn or Slack to check its preview image.
 
 ## Code quality
 

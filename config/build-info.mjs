@@ -14,15 +14,15 @@ function git(args) {
 }
 
 /**
- * Prefers the variables set by Cloudflare Pages and Vercel (their build checkouts
- * can be detached), then local git, then placeholders.
+ * Prefers BUILD_BRANCH / BUILD_COMMIT, which CI sets explicitly (a pull-request
+ * checkout is a detached merge commit, so git alone would report the wrong thing),
+ * then local git, then placeholders.
  * @returns {{ branch: string, commit: string }}
  */
 export function readBuildInfo() {
   const env = process.env;
-  const sha = env.CF_PAGES_COMMIT_SHA ?? env.VERCEL_GIT_COMMIT_SHA ?? git('rev-parse HEAD');
-  const branch =
-    env.CF_PAGES_BRANCH ?? env.VERCEL_GIT_COMMIT_REF ?? git('rev-parse --abbrev-ref HEAD');
+  const sha = env.BUILD_COMMIT || git('rev-parse HEAD');
+  const branch = env.BUILD_BRANCH || git('rev-parse --abbrev-ref HEAD');
 
   return {
     branch: branch && branch !== 'HEAD' ? branch : 'main',

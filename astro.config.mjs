@@ -4,11 +4,36 @@ import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import { readBuildInfo } from './config/build-info.mjs';
 
+/**
+ * The production URL: canonical links, sitemap, share images and JSON-LD all use it.
+ * Replace the placeholder once the domain is live.
+ */
+const SITE_URL = 'https://yourname.dev';
+
 // https://astro.build/config
 export default defineConfig({
-  // Placeholder until the domain is decided (Phase 4). Used for canonical URLs and the sitemap.
-  site: 'https://yourname.dev',
+  site: SITE_URL,
   integrations: [mdx()],
+  security: {
+    // Astro hashes the site's own scripts and styles into a <meta> Content-Security-Policy.
+    // External origins are listed explicitly; frame-ancestors lives in public/_headers
+    // because browsers ignore it in a <meta> tag.
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        // Cloudflare Web Analytics beacon, and the contact form's in-page submit.
+        "connect-src 'self' https://cloudflareinsights.com https://formspree.io",
+        "form-action 'self' https://formspree.io",
+        "base-uri 'self'",
+        "object-src 'none'",
+      ],
+      scriptDirective: {
+        resources: ["'self'", 'https://static.cloudflareinsights.com'],
+      },
+    },
+  },
   // Fonts are downloaded from Fontsource at build time and served from this site,
   // subset to Latin, with metric-matched fallbacks to avoid layout shift.
   fonts: [
