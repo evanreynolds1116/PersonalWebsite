@@ -17,8 +17,10 @@ export default defineConfig([
     rules: { 'no-undef': 'off' },
   },
   {
-    // Config files run in Node at build time.
-    files: ['*.{js,mjs}', 'config/**/*.mjs'],
-    languageOptions: { globals: { process: 'readonly' } },
+    // Config and build scripts run in Node; page.evaluate() callbacks in scripts run in the browser.
+    files: ['*.{js,mjs}', 'config/**/*.mjs', 'scripts/**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly', console: 'readonly', URL: 'readonly', document: 'readonly' },
+    },
   },
 ]);

@@ -1,0 +1,37 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types';
+
+type Props<Tag extends HTMLTag = 'div'> = Polymorphic<{ as: Tag }> & {
+  /** Title-bar text, usually a file path like `project-one/app`. */
+  title: string;
+  /** `sm` for cards; `lg` for hero terminals and screenshots. */
+  size?: 'sm' | 'lg';
+};
+
+const { as: Tag = 'div', title, size = 'lg', class: className, ...attrs } = Astro.props;
+---
+
+<!-- A minimal app window: three dots and a file-path title bar, then the slot content. -->
+<Tag
+  class:list={['overflow-hidden rounded-xl border border-border bg-surface', className]}
+  {...attrs}
+>
+  <div
+    class:list={[
+      'flex items-center border-b border-border font-mono text-muted',
+      size === 'sm' ? 'gap-1.5 px-3 py-2.5 text-xs md:px-3.5' : 'gap-2 px-4 py-3 text-[13px]',
+    ]}
+  >
+    {[0, 1, 2].map(() => (
+      <span
+        class:list={[
+          'shrink-0 rounded-full bg-border',
+          size === 'sm' ? 'size-2 md:size-[9px]' : 'size-[9px] md:size-[11px]',
+        ]}
+        aria-hidden="true"
+      />
+    ))}
+    <span class:list={['truncate', size === 'sm' ? 'ml-1.5' : 'ml-1.5 md:ml-2']}>{title}</span>
+  </div>
+  <slot />
+</Tag>

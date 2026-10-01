@@ -1,0 +1,46 @@
+---
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PromptHeading from '../components/PromptHeading.astro';
+import { uses } from '../data/uses';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Uses"
+  description="The editor, terminal, hardware and tools I use every day."
+  footerFile="uses.md"
+>
+  <Container class="pb-14 md:pb-24">
+    <PageHeader
+      path="~/uses"
+      command="ls -la"
+      title="Uses"
+      lead="The editor, terminal, hardware and tools I use every day."
+    />
+
+    <div class="flex max-w-reading flex-col gap-12 md:gap-16">
+      {uses.map((group) => (
+        <section aria-labelledby={`uses-${group.name}`} class="flex flex-col gap-4 md:gap-5">
+          <PromptHeading id={`uses-${group.name}`} path="~/uses" command={`ls ${group.name}/`} />
+          <ul class="border-t border-border">
+            {group.items.map((item) => (
+              <li class="flex flex-col gap-1 border-b border-border py-4 md:grid md:grid-cols-[240px_1fr] md:gap-x-8">
+                <span class="font-mono text-[15px] font-medium">
+                  {item.url ? (
+                    <a href={item.url} class="text-accent">
+                      {item.name}
+                    </a>
+                  ) : (
+                    item.name
+                  )}
+                </span>
+                {item.note && <span class="text-base text-muted">{item.note}</span>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </Container>
+</BaseLayout>

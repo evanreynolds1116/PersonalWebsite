@@ -1,0 +1,171 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Button from '../../components/Button.astro';
+import Container from '../../components/Container.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Flags from '../../components/Flags.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Screenshot from '../../components/Screenshot.astro';
+import WindowFrame from '../../components/WindowFrame.astro';
+import { projectInquiryHref } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, projectHref, type Project } from '../../lib/projects';
+
+export const getStaticPaths = (async () => {
+  const projects = await getProjects();
+  return projects.map((project, index) => ({
+    params: { slug: project.id },
+    // Wraps around, so the last project links back to the first.
+    props: { project, next: projects[(index + 1) % projects.length] },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  project: Project;
+  next: Project | undefined;
+}
+
+const { project, next } = Astro.props;
+const {
+  title,
+  summary,
+  role,
+  timeline,
+  team,
+  links,
+  results,
+  stack,
+  windowTitle,
+  cover,
+  coverAlt,
+} = project.data;
+const { Content } = await render(project);
+
+const details = [
+  { label: 'role', value: role },
+  { label: 'timeline', value: timeline },
+  { label: 'team', value: team },
+];
+const hasLinks = Boolean(links.live ?? links.github);
+---
+
+<BaseLayout
+  title={title}
+  description={summary}
+  footerFile={`${project.id}/README.md`}
+  ogType="article"
+>
+  <Container>
+    <PageHeader
+      path={`~/projects/${project.id}`}
+      command="cat README.md"
+      title={title}
+      lead={summary}
+      back={{ href: '/projects', label: '← cd ../projects' }}
+    />
+
+    <section
+      aria-label="Project details"
+      class="grid grid-cols-2 gap-x-8 gap-y-5 rounded-xl border border-border bg-surface p-5 font-mono text-sm leading-relaxed md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] md:p-6"
+    >
+      <dl class="contents">
+        {details.map(({ label, value }) => (
+          <div class="flex flex-col gap-1">
+            <dt class="text-muted">{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+        {hasLinks && (
+          <div class="flex flex-col gap-1">
+            <dt class="text-muted">links</dt>
+            <dd class="flex gap-4">
+              {links.live && (
+                <a href={links.live} class="text-accent">
+                  live ↗
+                </a>
+              )}
+              {links.github && (
+                <a href={links.github} class="text-accent">
+                  github ↗
+                </a>
+              )}
+            </dd>
+          </div>
+        )}
+      </dl>
+    </section>
+
+    <WindowFrame as="figure" title={`${windowTitle} — main screen`} class="mt-8 md:mt-10">
+      <Screenshot
+        src={cover}
+        alt={coverAlt}
+        placeholder="[hero screenshot]"
+        placeholderClass="h-[220px] md:h-[460px]"
+        widths={[700, 1100, 2100]}
+        sizes="(min-width: 1100px) 1050px, 100vw"
+        priority
+      />
+    </WindowFrame>
+
+    <section
+      aria-label="Results"
+      class="mt-8 grid gap-4 md:mt-10 md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] md:gap-6"
+    >
+      {results.map(({ value, label }) => (
+        <div class="flex flex-col gap-1 rounded-xl border border-border p-5 md:p-6">
+          <span class="font-mono text-[32px] leading-tight font-bold text-highlight md:text-[40px]">
+            {value}
+          </span>
+          <span class="text-base text-muted">{label}</span>
+        </div>
+      ))}
+    </section>
+
+    <!-- The MDX body; each ## heading becomes a numbered section. -->
+    <article class="prose max-w-reading pt-14 md:pt-[72px]">
+      <Content />
+
+      <h2 id="stack-and-links">Stack &amp; links</h2>
+      <Flags tags={stack} label="Stack" class="not-prose" />
+      {hasLinks && (
+        <div class="not-prose flex flex-col gap-3 pt-2 md:flex-row md:flex-wrap md:gap-4">
+          {links.live && (
+            <Button href={links.live} variant="ghost">
+              view live site ↗
+            </Button>
+          )}
+          {links.github && (
+            <Button href={links.github} variant="ghost">
+              source on github ↗
+            </Button>
+          )}
+        </div>
+      )}
+    </article>
+
+    <nav
+      aria-label="More projects"
+      class="mt-14 flex flex-wrap justify-between gap-4 border-y border-border py-6 font-mono text-[15px] md:mt-[88px]"
+    >
+      <a href="/projects" class="flex min-h-11 items-center text-muted">
+        ← all projects
+      </a>
+      {next && next.id !== project.id && (
+        <a href={projectHref(next)} class="flex min-h-11 items-center text-text">
+          {`next: ${next.data.title} →`}
+        </a>
+      )}
+    </nav>
+
+    <CtaBand
+      id="cta"
+      title="Want something like this built"
+      punctuation="?"
+      text="Tell me about your team or project."
+      class="mt-14 mb-14 md:mt-[72px] md:mb-24"
+    >
+      <Button href={projectInquiryHref}>get in touch</Button>
+    </CtaBand>
+  </Container>
+</BaseLayout>

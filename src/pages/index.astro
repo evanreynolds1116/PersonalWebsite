@@ -1,36 +1,226 @@
 ---
+import AvailabilityBadge from '../components/AvailabilityBadge.astro';
 import Button from '../components/Button.astro';
 import Container from '../components/Container.astro';
-import { site } from '../config/site';
+import CtaBand from '../components/CtaBand.astro';
+import Flags from '../components/Flags.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import PromptHeading from '../components/PromptHeading.astro';
+import WindowFrame from '../components/WindowFrame.astro';
+import { projectInquiryHref, site, stack, whoami } from '../config/site';
+import { services } from '../data/services';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeaturedProjects } from '../lib/projects';
+import { dateRange, resume } from '../lib/resume';
+
+const featured = await getFeaturedProjects();
+const recentRoles = resume.work.slice(0, 3);
+const whoamiRows = Object.entries(whoami);
+
+// JSON-LD Person: lets search engines connect the site to your name and profiles.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  url: Astro.site?.href,
+  email: `mailto:${site.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: site.city },
+  sameAs: resume.basics.profiles.map((p) => p.url),
+  knowsAbout: stack,
+};
+// Escape "<" so no value can close the script element.
+const personJson = JSON.stringify(person).replace(/</g, '\\u003c');
 ---
 
-<!-- Phase 1 placeholder. The real home page (hero, projects, experience, services, contact) is Phase 2. -->
-<BaseLayout title="Home">
-  <Container as="section" aria-labelledby="hero-title" class="py-12 md:py-24">
-    <div class="flex max-w-[34em] flex-col gap-5 md:gap-6">
-      <p class="font-mono text-[13px] text-highlight md:text-sm">
-        [Availability: open to senior roles · taking select freelance work]
-      </p>
-      <h1
-        id="hero-title"
-        class="font-mono text-[38px] leading-[1.15] font-bold tracking-[-0.02em] md:text-[56px] md:leading-[1.1]"
-      >
-        Hi, I'm {site.name}
-        <span class="cursor text-accent" aria-hidden="true">
-          _
-        </span>
-      </h1>
-      <p class="text-lg text-muted md:text-xl">
-        [Home page content arrives in Phase 2. This page exists so the layout, nav, theme toggle and
-        footer can be reviewed.]
-      </p>
-      <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
-        <Button href="/resume">./view-resume</Button>
-        <Button href="/contact" variant="ghost">
-          start a project →
-        </Button>
+<BaseLayout>
+  <script slot="head" type="application/ld+json" set:html={personJson} is:inline />
+  <Container>
+    <!-- Hero. The whoami card sits beside the intro on desktop and below it on phones. -->
+    <section
+      aria-labelledby="hero-title"
+      class="grid items-center gap-10 pt-12 pb-10 md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] md:gap-14 md:pt-24 md:pb-[72px]"
+    >
+      <div class="flex flex-col gap-5 md:gap-6">
+        <AvailabilityBadge />
+        <h1
+          id="hero-title"
+          class="font-mono text-[38px] leading-[1.15] font-bold tracking-[-0.02em] md:text-[56px] md:leading-[1.1]"
+        >
+          Hi, I'm {site.name}
+          <span class="cursor text-accent" aria-hidden="true">
+            _
+          </span>
+        </h1>
+        <p class="max-w-[34em] text-lg text-muted md:text-xl">
+          {site.description} [One sentence on what makes your work different.]
+        </p>
+        <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
+          <Button href="/resume">./view-resume</Button>
+          <Button href={projectInquiryHref} variant="ghost">
+            start a project →
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <WindowFrame title={`~/${site.handle} — zsh`} class="font-mono text-sm md:text-[15px]">
+        <div class="flex flex-col gap-1.5 p-[18px] leading-[1.7] md:gap-2 md:p-6">
+          <p>
+            <span class="text-accent" aria-hidden="true">
+              ${' '}
+            </span>
+            whoami
+          </p>
+          <dl class="grid grid-cols-[96px_minmax(0,1fr)] gap-x-2.5 text-muted md:grid-cols-[110px_1fr] md:gap-x-3">
+            {whoamiRows.map(([key, value]) => (
+              <>
+                <dt>{key}</dt>
+                <dd class:list={key === 'status' ? 'text-highlight' : 'text-text'}>{value}</dd>
+              </>
+            ))}
+          </dl>
+          <p class="mt-2 hidden md:block" aria-hidden="true">
+            <span class="text-accent">$ </span>
+            <span class="cursor text-accent">▍</span>
+          </p>
+        </div>
+      </WindowFrame>
+    </section>
+
+    <!-- Tech stack strip -->
+    <section
+      aria-labelledby="stack-label"
+      class="flex flex-col gap-2 border-y border-border py-5 md:flex-row md:items-center md:gap-3 md:py-6"
+    >
+      <h2 id="stack-label" class="font-mono text-[13px] text-muted md:mr-2 md:text-sm">
+        stack:
+      </h2>
+      <Flags tags={stack} />
+    </section>
+
+    <!-- Featured projects -->
+    <section
+      id="projects"
+      aria-labelledby="projects-title"
+      class="flex flex-col gap-6 pt-14 md:gap-10 md:pt-24"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-4">
+        <PromptHeading
+          id="projects-title"
+          path="~/projects"
+          command="ls --featured"
+          commandShort="ls"
+        />
+        <a href="/projects" class="hidden font-mono text-[15px] text-accent md:inline">
+          all projects →
+        </a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
+        {featured.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+      <Button href="/projects" variant="ghost" class="text-accent md:hidden">
+        all projects →
+      </Button>
+    </section>
+
+    <!-- Experience snapshot -->
+    <section
+      id="experience"
+      aria-labelledby="exp-title"
+      class="flex flex-col gap-5 pt-14 md:gap-8 md:pt-24"
+    >
+      <div class="flex flex-wrap items-baseline justify-between gap-4">
+        <PromptHeading
+          id="exp-title"
+          path="~/experience"
+          command="git log --oneline"
+          commandShort="git log"
+        />
+        <a href="/resume.pdf" class="hidden font-mono text-[15px] text-accent md:inline">
+          full resume (pdf) ↓
+        </a>
+      </div>
+      <ol class="border-t border-border">
+        {recentRoles.map((role) => (
+          <li class="flex flex-col gap-1 border-b border-border py-5 md:grid md:grid-cols-[repeat(auto-fit,minmax(240px,1fr))] md:gap-x-8 md:gap-y-2 md:py-6">
+            <p class="font-mono text-[13px] md:text-[15px]">
+              {role.endDate ? (
+                <span class="text-muted">{dateRange(role.startDate, role.endDate)}</span>
+              ) : (
+                <>
+                  <span class="text-highlight">{dateRange(role.startDate, role.endDate)}</span>
+                  <span class="text-muted"> HEAD</span>
+                </>
+              )}
+            </p>
+            <div class="flex flex-col gap-1">
+              <h3 class="font-semibold">{`${role.position} @ ${role.name}`}</h3>
+              <p class="text-[15px] text-muted md:text-base">{role.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <Button href="/resume.pdf" variant="ghost" class="text-accent md:hidden">
+        full resume (pdf) ↓
+      </Button>
+    </section>
+
+    <!-- Freelance services -->
+    <section
+      id="services"
+      aria-labelledby="svc-title"
+      class="flex flex-col gap-4 pt-14 md:gap-8 md:pt-24"
+    >
+      <div class="mb-1 flex flex-wrap items-baseline justify-between gap-4 md:mb-0">
+        <PromptHeading
+          id="svc-title"
+          path="~/freelance"
+          command="cat services.txt"
+          commandShort="cat services"
+        />
+        <a href="/services" class="hidden font-mono text-[15px] text-accent md:inline">
+          services &amp; pricing →
+        </a>
+      </div>
+      <ol class="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))] md:gap-6">
+        {services.map((service, index) => (
+          <li class="flex flex-col gap-1.5 rounded-xl border border-border p-5 md:gap-3 md:p-7">
+            <span class="font-mono text-[13px] text-accent md:text-sm" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <h3 class="font-mono text-[17px] font-bold md:text-[19px]">{service.title}</h3>
+            <p class="text-[15px] text-muted md:text-base">{service.summary}</p>
+          </li>
+        ))}
+      </ol>
+      <Button href="/services" variant="ghost" class="text-accent md:hidden">
+        services &amp; pricing →
+      </Button>
+    </section>
+
+    <CtaBand
+      id="contact"
+      title="Let's build something"
+      text={`Hiring for a role or planning a project? ${site.replyTime}`}
+      class="my-14 md:my-24"
+    >
+      <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
+        <Button href="/contact">get in touch</Button>
+        <div class="grid grid-cols-2 gap-3 md:flex md:gap-4">
+          {site.github && (
+            <Button href={site.github} variant="ghost">
+              github
+            </Button>
+          )}
+          {site.linkedin && (
+            <Button href={site.linkedin} variant="ghost">
+              linkedin
+            </Button>
+          )}
+        </div>
+      </div>
+    </CtaBand>
   </Container>
 </BaseLayout>

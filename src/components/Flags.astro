@@ -1,0 +1,34 @@
+---
+interface Props {
+  tags: readonly string[];
+  /** `boxed` for the stack strip and case studies; `plain` for compact lines on cards. */
+  variant?: 'boxed' | 'plain';
+  /** Accessible list name, e.g. "Stack". */
+  label?: string;
+  class?: string;
+}
+
+const { tags, variant = 'boxed', label, class: className } = Astro.props;
+---
+
+<!-- Stack tags styled as command-line flags: --react --go --postgres. -->
+<ul
+  aria-label={label}
+  class:list={[
+    'flex flex-wrap font-mono text-accent',
+    variant === 'boxed' ? 'gap-2 text-[13px] md:gap-2.5 md:text-sm' : 'gap-x-[1ch] text-[13px]',
+    className,
+  ]}
+>
+  {tags.map((tag) => (
+    <li
+      class:list={
+        variant === 'boxed'
+          ? 'rounded-md border border-border px-2.5 py-[5px] md:px-3 md:py-1.5'
+          : undefined
+      }
+    >
+      {`--${tag}`}
+    </li>
+  ))}
+</ul>

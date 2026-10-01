@@ -1,0 +1,75 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "[Your Name]",
+    "label": "[Senior Software Engineer]",
+    "email": "[you@example.com]",
+    "url": "https://yourname.dev",
+    "summary": "[Two or three sentences: what you build, the kind of teams you do your best work in, and the result you're known for.]",
+    "location": {
+      "city": "[Your city]",
+      "region": "[Region]",
+      "countryCode": "[CC]"
+    },
+    "profiles": [
+      { "network": "GitHub", "username": "yourname", "url": "https://github.com/yourname" },
+      {
+        "network": "LinkedIn",
+        "username": "yourname",
+        "url": "https://www.linkedin.com/in/yourname"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "[Company]",
+      "position": "[Role]",
+      "url": "https://example.com",
+      "startDate": "[20XX]",
+      "summary": "[Biggest impact in one line, with a number.]",
+      "highlights": [
+        "[Impact bullet with a number: what you shipped, and what it changed.]",
+        "[Impact bullet with a number.]",
+        "[Impact bullet with a number.]"
+      ]
+    },
+    {
+      "name": "[Company]",
+      "position": "[Role]",
+      "startDate": "[20XX]",
+      "endDate": "[20XX]",
+      "summary": "[Biggest impact in one line, with a number.]",
+      "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
+    },
+    {
+      "name": "[Company]",
+      "position": "[Role]",
+      "startDate": "[20XX]",
+      "endDate": "[20XX]",
+      "summary": "[Biggest impact in one line, with a number.]",
+      "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "[University]",
+      "area": "[Computer Science]",
+      "studyType": "[B.S.]",
+      "startDate": "[20XX]",
+      "endDate": "[20XX]"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "[Certification name]",
+      "issuer": "[Issuer]",
+      "date": "[20XX]"
+    }
+  ],
+  "skills": [
+    { "name": "Languages", "keywords": ["typescript", "go", "python", "sql"] },
+    { "name": "Frontend", "keywords": ["react", "astro", "tailwind"] },
+    { "name": "Backend", "keywords": ["node", "postgres", "redis", "grpc"] },
+    { "name": "Cloud & ops", "keywords": ["aws", "docker", "terraform", "github-actions"] }
+  ]
+}

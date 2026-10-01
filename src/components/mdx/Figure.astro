@@ -1,0 +1,36 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  /** Title-bar label, e.g. `architecture.svg`. */
+  title: string;
+  caption: string;
+  src?: ImageMetadata;
+  /** Required with `src`. Describe what the diagram shows, not just its name. */
+  alt?: string;
+  /** Placeholder text until `src` is set. */
+  placeholder?: string;
+}
+
+const { title, caption, src, alt = '', placeholder = '[architecture diagram]' } = Astro.props;
+---
+
+<!-- A captioned figure for case-study bodies, e.g. the architecture diagram. -->
+<figure class="not-prose my-2 overflow-hidden rounded-xl border border-border bg-surface">
+  <div class="border-b border-border px-4 py-2.5 font-mono text-[13px] text-muted">{title}</div>
+  {src ? (
+    <Image
+      src={src}
+      alt={alt}
+      widths={[720, 1440]}
+      sizes="(min-width: 768px) 720px, 100vw"
+      class="block h-auto w-full"
+    />
+  ) : (
+    <div class="flex h-[200px] items-center justify-center font-mono text-sm text-muted md:h-[280px]">
+      {placeholder}
+    </div>
+  )}
+  <figcaption class="border-t border-border px-4 py-3 text-[15px] text-muted">{caption}</figcaption>
+</figure>

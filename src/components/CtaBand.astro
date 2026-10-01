@@ -1,0 +1,35 @@
+---
+interface Props {
+  id: string;
+  /** Heading text; `punctuation` is appended in the accent color. */
+  title: string;
+  punctuation?: string;
+  text: string;
+  class?: string;
+}
+
+const { id, title, punctuation = '.', text, class: className } = Astro.props;
+const headingId = `${id}-title`;
+---
+
+<!-- Call-to-action band: "Let's build something." on home, "Want something like this built?" on case studies. -->
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={[
+    'flex flex-col gap-4 rounded-2xl border border-border bg-surface px-6 py-8 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-8 md:p-12',
+    className,
+  ]}
+>
+  <div class="flex max-w-[34em] flex-col gap-3 md:gap-2">
+    <h2
+      id={headingId}
+      class="font-mono text-[26px] leading-tight font-bold md:text-[28px] lg:text-[32px]"
+    >
+      {title}
+      <span class="text-accent">{punctuation}</span>
+    </h2>
+    <p class="text-base text-muted md:text-lg">{text}</p>
+  </div>
+  <slot />
+</section>

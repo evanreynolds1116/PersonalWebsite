@@ -1,0 +1,31 @@
+---
+interface Props {
+  /** Prompt line above the title, e.g. `~/projects $` + `ls`. */
+  path: string;
+  command: string;
+  title: string;
+  lead?: string;
+  /** Optional back link shown first, e.g. `← cd ../projects`. */
+  back?: { href: string; label: string };
+}
+
+const { path, command, title, lead, back } = Astro.props;
+---
+
+<!-- Top of an inner page, as in the case-study mockup. -->
+<header class="flex max-w-[820px] flex-col gap-4 pt-12 pb-10 md:gap-5 md:pt-[72px] md:pb-12">
+  {back && (
+    <a href={back.href} class="self-start font-mono text-sm text-muted">
+      {back.label}
+    </a>
+  )}
+  <p class="font-mono text-sm text-muted md:text-[15px]">
+    {`${path} $ `}
+    <span class="text-text">{command}</span>
+  </p>
+  <h1 class="font-mono text-[34px] leading-[1.15] font-bold tracking-[-0.02em] md:text-[52px] md:leading-[1.1]">
+    {title}
+  </h1>
+  {lead && <p class="text-lg leading-normal text-muted md:text-[22px]">{lead}</p>}
+  <slot />
+</header>

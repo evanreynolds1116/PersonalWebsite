@@ -1,0 +1,147 @@
+---
+import Button from '../components/Button.astro';
+import Container from '../components/Container.astro';
+import CtaBand from '../components/CtaBand.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PromptHeading from '../components/PromptHeading.astro';
+import { projectInquiryHref, site } from '../config/site';
+import { process, services, showPricing, testimonials } from '../data/services';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<BaseLayout
+  title="Services"
+  description="Freelance engineering: what I build, how an engagement works, and where pricing starts."
+  footerFile="services.txt"
+>
+  <Container>
+    <PageHeader
+      path="~/freelance"
+      command="cat services.txt"
+      title="Services"
+      lead="[Who you help and the kind of project you take on, in one sentence.]"
+    >
+      <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
+        <Button href={projectInquiryHref}>start a project</Button>
+        <Button href="/projects" variant="ghost">
+          see past work →
+        </Button>
+      </div>
+    </PageHeader>
+
+    <section aria-labelledby="offerings-title" class="flex flex-col gap-5 md:gap-8">
+      <PromptHeading id="offerings-title" path="~/freelance" command="ls offerings/" />
+      <ol class="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] md:gap-6">
+        {services.map((service, index) => (
+          <li class="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5 md:p-7">
+            <span class="font-mono text-[13px] text-accent md:text-sm" aria-hidden="true">
+              {pad(index + 1)}
+            </span>
+            <h3 class="font-mono text-lg font-bold md:text-[19px]">{service.title}</h3>
+            <p class="text-base text-muted">{service.summary}</p>
+            <ul class="flex flex-col gap-1.5 text-base" aria-label="Includes">
+              {service.includes.map((item) => (
+                <li class="flex gap-2.5">
+                  <span class="font-mono text-accent" aria-hidden="true">
+                    +
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <dl class="mt-auto grid grid-cols-2 gap-4 border-t border-border pt-4 font-mono text-sm">
+              {showPricing && (
+                <div class="flex flex-col gap-1">
+                  <dt class="text-muted">from</dt>
+                  <dd class="text-highlight">{service.startingFrom}</dd>
+                </div>
+              )}
+              <div class="flex flex-col gap-1">
+                <dt class="text-muted">timeline</dt>
+                <dd>{service.timeline}</dd>
+              </div>
+            </dl>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="process-title" class="flex flex-col gap-5 pt-14 md:gap-8 md:pt-24">
+      <PromptHeading
+        id="process-title"
+        path="~/freelance"
+        command="cat process.md"
+        commandShort="cat process"
+      />
+      <ol class="grid gap-4 md:grid-cols-3 md:gap-6">
+        {process.map((step, index) => (
+          <li class="flex flex-col gap-2 border-t-2 border-accent pt-4">
+            <p class="font-mono text-sm text-muted">
+              {`step ${pad(index + 1)}`}
+              {index < process.length - 1 && (
+                <span class="text-accent" aria-hidden="true">
+                  {' →'}
+                </span>
+              )}
+            </p>
+            <h3 class="font-mono text-lg font-bold md:text-xl">{`./${step.name}`}</h3>
+            <p class="text-base text-muted">{step.summary}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {testimonials.length > 0 && (
+      <section
+        aria-labelledby="testimonials-title"
+        class="flex flex-col gap-5 pt-14 md:gap-8 md:pt-24"
+      >
+        <PromptHeading
+          id="testimonials-title"
+          path="~/freelance"
+          command="grep -r 'kind words'"
+          commandShort="grep 'kind words'"
+        />
+        <ul class="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] md:gap-6">
+          {testimonials.map((t) => (
+            <li>
+              <figure class="flex h-full flex-col gap-4 rounded-xl border border-border p-5 md:p-7">
+                <blockquote class="text-lg leading-relaxed">
+                  <p>
+                    <span class="font-mono text-accent" aria-hidden="true">
+                      &gt;{' '}
+                    </span>
+                    {t.quote}
+                  </p>
+                </blockquote>
+                <figcaption class="mt-auto font-mono text-sm text-muted">
+                  {'— '}
+                  {t.url ? (
+                    <a href={t.url} class="text-text">
+                      {t.name}
+                    </a>
+                  ) : (
+                    <span class="text-text">{t.name}</span>
+                  )}
+                  {`, ${t.title}`}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <CtaBand
+      id="cta"
+      title="Have a project in mind"
+      punctuation="?"
+      text={`Tell me what you're building and when you need it. ${site.replyTime}`}
+      class="my-14 md:my-24"
+    >
+      <Button href={projectInquiryHref}>start a project</Button>
+    </CtaBand>
+  </Container>
+</BaseLayout>

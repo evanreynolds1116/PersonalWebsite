@@ -1,0 +1,57 @@
+---
+title: '[Project Two]'
+summary: "[One sentence: what it is, who it's for, and the headline result.]"
+outcome: '[One-line outcome with a number, e.g. what it cut, grew or enabled.]'
+order: 2
+featured: true
+stack: ['go', 'aws', 'docker']
+windowTitle: 'project-two/dashboard'
+role: '[Lead backend engineer]'
+timeline: '[X months, 20XX]'
+team: '[Solo / team of X]'
+links:
+  live: 'https://example.com'
+  github: 'https://github.com/yourname/project-two'
+results:
+  - value: '[X%]'
+    label: '[What improved, e.g. faster page loads]'
+  - value: '[X]'
+    label: '[What grew, e.g. active users]'
+  - value: '[$X]'
+    label: '[What it saved, e.g. monthly cost]'
+---
+
+import Decision from '../../components/mdx/Decision.astro';
+import Decisions from '../../components/mdx/Decisions.astro';
+import Figure from '../../components/mdx/Figure.astro';
+
+## The problem
+
+[What was broken, slow or missing, and who it affected. Two or three sentences with the context a reader outside the company needs.]
+
+[Why it mattered: the cost of leaving it alone, in time, money or users.]
+
+## My role
+
+[What you personally owned versus the team. Be specific: "I designed the data model and built the sync service."]
+
+## Approach
+
+[How you tackled it, in plain language. Walk through the architecture at a level a hiring manager can follow.]
+
+<Figure title="architecture.svg" caption="[One-line caption explaining the diagram.]" />
+
+## Key decisions
+
+<Decisions>
+  <Decision title="[Decision one, e.g. chose X over Y]">
+    [Why, and what you gave up in exchange.]
+  </Decision>
+  <Decision title="[Decision two]">[Why, and what you gave up in exchange.]</Decision>
+</Decisions>
+
+## Results
+
+[What changed after launch, with the numbers from the cards above and how you measured them.]
+
+[What you'd do differently next time. One honest sentence here builds a lot of trust.]
