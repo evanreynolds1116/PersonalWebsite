@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
 import { site } from '../config/site';
+import { ogKey } from '../lib/pages';
 import '../styles/global.css';
 
 interface Props {
@@ -12,11 +13,23 @@ interface Props {
   /** Passed to the footer status line (e.g. `project-one/README.md`). */
   footerFile?: string;
   noindex?: boolean;
+  /** `article` for case studies; `website` otherwise. */
+  ogType?: 'website' | 'article';
 }
 
-const { title, description = site.description, footerFile, noindex = false } = Astro.props;
+const {
+  title,
+  description = site.description,
+  footerFile,
+  noindex = false,
+  ogType = 'website',
+} = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+// No trailing slash, matching sitemap.xml.
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonical = new URL(pathname, Astro.site);
+// Generated after the build by scripts/postbuild.mjs from src/pages/og-src.
+const ogImage = new URL(`/og/${ogKey(pathname)}.png`, Astro.site);
 ---
 
 <!doctype html>
@@ -31,7 +44,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#0b0f14" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Sharing: Open Graph + Twitter/X card. -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${fullTitle}: ${description}`} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Page-specific head content, e.g. JSON-LD on the home page. -->
+    <slot name="head" />
 
     <!--
       Runs before first paint so there is no flash of the wrong theme.

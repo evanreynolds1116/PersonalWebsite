@@ -13,6 +13,11 @@ const location = [basics.location.city, basics.location.region].filter(Boolean).
 const contactLine = [location, basics.email, site.github, site.linkedin]
   .filter((item): item is string => Boolean(item))
   .map((item) => item.replace(/^https?:\/\/(www\.)?/, ''));
+// Saved file name, e.g. "jane-doe-resume.pdf".
+const pdfName = `${basics.name
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '')}-resume.pdf`;
 ---
 
 <BaseLayout
@@ -20,27 +25,22 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
   description={`${basics.label}. Experience, skills and education.`}
   footerFile="resume.json"
 >
-  <Container class="pb-14 md:pb-24">
+  <Container class="resume pb-14 md:pb-24">
     <PageHeader path="~/resume" command="cat resume.json" title={basics.name} lead={basics.label}>
       <!-- Print shows contact details in place of the buttons. -->
       <p class="hidden font-mono text-sm print:block">{contactLine.join(' · ')}</p>
       <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4 print:hidden">
-        <!-- Phase 3 swaps this for a build-time PDF download. -->
-        <button
-          type="button"
-          id="print-resume"
-          hidden
-          class="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-lg bg-accent px-5 py-3 font-mono text-[15px] font-bold text-on-accent"
-        >
-          print / save as pdf
-        </button>
+        <!-- Generated from this page at build time by scripts/postbuild.mjs. -->
+        <Button href="/resume.pdf" download={pdfName}>
+          download pdf ↓
+        </Button>
         <Button href={`mailto:${basics.email}`} variant="ghost">
           email me
         </Button>
       </div>
     </PageHeader>
 
-    <div class="flex max-w-reading flex-col gap-14 md:gap-[72px] print:gap-8">
+    <div class="resume-body flex max-w-reading flex-col gap-14 md:gap-[72px]">
       <section aria-labelledby="summary-title" class="flex flex-col gap-4">
         <PromptHeading id="summary-title" path="~/resume" command="cat summary.md" />
         <p>{basics.summary}</p>
@@ -50,7 +50,7 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
         <PromptHeading id="work-title" path="~/experience" command="git log" />
         <ol class="border-t border-border">
           {work.map((role) => (
-            <li class="flex flex-col gap-2 border-b border-border py-6 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
+            <li class="resume-row flex flex-col gap-2 border-b border-border py-6 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
               <p class="font-mono text-[13px] md:text-[15px]">
                 <span class:list={role.endDate ? 'text-muted' : 'text-highlight'}>
                   {dateRange(role.startDate, role.endDate)}
@@ -81,7 +81,7 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
         <PromptHeading id="skills-title" path="~/skills" command="ls -R" />
         <dl class="flex flex-col gap-5">
           {skills.map((group) => (
-            <div class="flex flex-col gap-2 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:items-baseline md:gap-x-8">
+            <div class="resume-row flex flex-col gap-2 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:items-baseline md:gap-x-8">
               <dt class="font-mono text-sm text-muted">{group.name}</dt>
               <dd>
                 <Flags tags={group.keywords} />
@@ -96,7 +96,7 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
           <PromptHeading id="edu-title" path="~/education" command="ls" />
           <ul class="border-t border-border">
             {education.map((item) => (
-              <li class="flex flex-col gap-1 border-b border-border py-5 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
+              <li class="resume-row flex flex-col gap-1 border-b border-border py-5 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
                 <p class="font-mono text-[13px] text-muted md:text-[15px]">
                   {dateRange(item.startDate, item.endDate)}
                 </p>
@@ -115,7 +115,7 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
           <PromptHeading id="certs-title" path="~/certs" command="ls" />
           <ul class="border-t border-border">
             {certificates.map((cert) => (
-              <li class="flex flex-col gap-1 border-b border-border py-5 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
+              <li class="resume-row flex flex-col gap-1 border-b border-border py-5 break-inside-avoid md:grid md:grid-cols-[160px_1fr] md:gap-x-8">
                 <p class="font-mono text-[13px] text-muted md:text-[15px]">
                   {cert.date ? year(cert.date) : ''}
                 </p>
@@ -134,10 +134,71 @@ const contactLine = [location, basics.email, site.github, site.linkedin]
   </Container>
 </BaseLayout>
 
-<script>
-  const button = document.getElementById('print-resume');
-  if (button) {
-    button.hidden = false;
-    button.addEventListener('click', () => window.print());
+<style>
+  /*
+   * Compact print layout for the PDF. Letter paper is narrower than the 768px
+   * breakpoint, so without this the phone layout (and a lot of whitespace) prints.
+   */
+  @media print {
+    .resume :global(header) {
+      gap: 4px;
+      padding: 0 0 14px;
+    }
+
+    .resume :global(h1) {
+      font-size: 22pt;
+    }
+
+    .resume :global(header > p:not(:first-child)) {
+      font-size: 11pt;
+    }
+
+    .resume-body {
+      gap: 18px;
+      font-size: 10pt;
+    }
+
+    .resume-body > :global(section) {
+      gap: 8px;
+    }
+
+    .resume-body :global(h2) {
+      font-size: 13pt;
+    }
+
+    .resume-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      column-gap: 20px;
+      row-gap: 2px;
+      padding-block: 8px;
+    }
+
+    .resume-row :global(:is(p, li, dt, dd, h3)) {
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+
+    .resume-row :global(ul) {
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .resume-row :global(dd li) {
+      padding: 0 6px;
+      font-size: 8.5pt;
+    }
+
+    .resume-row :global(dd ul) {
+      gap: 4px;
+    }
+
+    .resume-body :global(dl) {
+      gap: 0;
+    }
+
+    .resume-body :global(dl) .resume-row {
+      padding-block: 3px;
+    }
   }
-</script>
+</style>

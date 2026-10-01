@@ -50,7 +50,12 @@ const details = [
 const hasLinks = Boolean(links.live ?? links.github);
 ---
 
-<BaseLayout title={title} description={summary} footerFile={`${project.id}/README.md`}>
+<BaseLayout
+  title={title}
+  description={summary}
+  footerFile={`${project.id}/README.md`}
+  ogType="article"
+>
   <Container>
     <PageHeader
       path={`~/projects/${project.id}`}

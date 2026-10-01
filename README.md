@@ -4,7 +4,7 @@ Source for my personal site: a portfolio, resume and freelance page for a softwa
 
 Built with [Astro](https://astro.build), TypeScript (strict) and [Tailwind CSS](https://tailwindcss.com) v4. Pages are static HTML, and JavaScript ships only for small enhancements: the theme toggle, the mobile menu, the projects filter, the contact form and the 404 path.
 
-> **Status: Phase 2 (core pages).** Home, projects with case studies, resume, about and contact are built on the Phase 1 foundation (tokens, fonts, nav, footer, theme toggle, 404). Content is placeholder text in `[brackets]`. See [`docs/website-plan.md`](docs/website-plan.md) for the full plan and build phases.
+> **Status: Phase 3 (freelance & polish).** All pages are built: home, projects and case studies, resume (with a generated PDF), services, about, contact, uses and the 404. Every page has share images, metadata and a sitemap entry, and scores 100 on all Lighthouse categories (mobile). Content is placeholder text in `[brackets]`. See [`docs/website-plan.md`](docs/website-plan.md) for the full plan and build phases.
 
 ## Running it
 
@@ -12,17 +12,19 @@ Requires Node.js 22.12 or newer.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321
+npx playwright install chromium   # once per machine, for the build's PDF and share images
+npm run dev                        # http://localhost:4321
 ```
 
-| Script                            | What it does                                                        |
-| --------------------------------- | ------------------------------------------------------------------- |
-| `npm run dev`                     | Start the dev server with hot reload                                |
-| `npm run build`                   | Type-check (`astro check`), then build the static site into `dist/` |
-| `npm run preview`                 | Serve the built `dist/` locally                                     |
-| `npm run check`                   | Type-check `.astro` and `.ts` files only                            |
-| `npm run lint` / `lint:fix`       | ESLint (TypeScript, Astro and accessibility rules)                  |
-| `npm run format` / `format:check` | Prettier                                                            |
+| Script                            | What it does                                                                                             |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                     | Start the dev server with hot reload                                                                     |
+| `npm run build`                   | Type-check, build into `dist/`, then generate share images and the resume PDF ([details](#build-output)) |
+| `npm run build:site`              | Type-check and build only, without the Playwright step                                                   |
+| `npm run preview`                 | Serve the built `dist/` locally                                                                          |
+| `npm run check`                   | Type-check `.astro` and `.ts` files only                                                                 |
+| `npm run lint` / `lint:fix`       | ESLint (TypeScript, Astro and accessibility rules)                                                       |
+| `npm run format` / `format:check` | Prettier                                                                                                 |
 
 The first build downloads the fonts (see [Fonts](#fonts)), so it needs network access.
 
@@ -34,6 +36,8 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
 │   └── build-info.mjs        Reads branch + commit for the footer at build time (runs in Node)
 ├── docs/                     Planning docs and approved mockups (not part of the build)
 ├── public/                   Static files copied as-is (favicon)
+├── scripts/
+│   └── postbuild.mjs         Share images, resume PDF and output checks (runs after astro build)
 └── src/
     ├── components/
     │   ├── mdx/                Case-study body components: Figure, Decisions, Decision
@@ -56,10 +60,12 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
     │   └── projects/*.mdx      One file per case study (filename = URL slug)
     ├── data/
     │   ├── resume.json         JSON Resume: single source for /resume and the home timeline
-    │   └── services.ts         Freelance offerings
+    │   ├── services.ts         Offerings, process, pricing, testimonials
+    │   └── uses.ts             The /uses list
     ├── layouts/
     │   └── BaseLayout.astro    <head>, theme bootstrap, fonts, skip link, nav, footer
     ├── lib/
+    │   ├── pages.ts            Registry of every page: sitemap entries and share-image text
     │   ├── projects.ts         Collection queries: ordered, featured, tags
     │   ├── resume.ts           Validates resume.json with zod; date helpers
     │   └── theme.ts            Theme read/apply/persist helpers used by the toggle
@@ -69,9 +75,14 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
     │   │   ├── index.astro     Project grid with tag filter
     │   │   └── [slug].astro    Case-study template
     │   ├── resume.astro        Web resume (print-friendly)
+    │   ├── services.astro      Offerings, process, testimonials
     │   ├── about.astro
     │   ├── contact.astro       Contact form (Formspree)
-    │   └── 404.astro           "zsh: command not found" page
+    │   ├── uses.astro
+    │   ├── 404.astro           "zsh: command not found" page
+    │   ├── og-src/[key].astro  Share-image templates (screenshotted, then removed)
+    │   ├── sitemap.xml.ts
+    │   └── robots.txt.ts
     ├── styles/
     │   └── global.css          Tokens, Tailwind theme mapping, base, prose and print styles
     ├── content.config.ts       Projects collection schema
@@ -119,6 +130,20 @@ The blinking cursors (`.cursor`) and any other animation stop under `prefers-red
 
 The status line shows the branch and short commit hash of the build: `main · built from a1b2c3d`. `config/build-info.mjs` reads them from Cloudflare Pages or Vercel environment variables, then from local git, and the result is injected as `__BUILD_INFO__` via Vite's `define`. Outside a git repo it shows `built from dev`.
 
+### Build output
+
+`npm run build` runs `astro build`, then [`scripts/postbuild.mjs`](scripts/postbuild.mjs), which serves `dist/` with Astro's preview server and uses Playwright's headless Chromium to:
+
+1. **Generate share images.** Each page gets a 1200×630 Open Graph image in the terminal style, rendered from `src/pages/og-src/[key].astro` with the site's own CSS and fonts and saved to `dist/og/<page>.png`. The template HTML is then deleted so it never ships.
+2. **Export the resume PDF.** `/resume` is printed to `dist/resume.pdf` (US Letter) with the print stylesheet, so the web resume and the PDF come from the same `resume.json` and never drift. Print styles live in `global.css` (colors) and `resume.astro` (compact layout).
+3. **Check the output.** The build fails if any page's `og:image` is missing or an indexable page isn't in `sitemap.xml`. Both come from [`src/lib/pages.ts`](src/lib/pages.ts), so a new page needs an entry there.
+
+Chromium has to be installed once per machine (`npx playwright install chromium`). Where it can't run, `npm run build:site` builds the site without these files. In `npm run dev`, `/resume.pdf` and `/og/*` don't exist yet.
+
+### SEO and sharing
+
+Every page has a unique title and description, a canonical URL, Open Graph and Twitter/X card tags with its own image, and an entry in `sitemap.xml` (the 404 is `noindex`). `robots.txt` points to the sitemap. The home page includes JSON-LD `Person` data built from `resume.json`.
+
 ### Without JavaScript
 
 The site still works. On phones the menu links render inline and the menu and theme buttons are hidden, and the 404 page shows a generic path.
@@ -140,7 +165,8 @@ Everything in `[brackets]` is a placeholder. Where each piece lives:
 | Name, role, email, city, GitHub/LinkedIn                           | `basics` in [`src/data/resume.json`](src/data/resume.json); the rest of the site reads them from there |
 | Experience, education, certificates, skills                        | [`src/data/resume.json`](src/data/resume.json), in [JSON Resume](https://jsonresume.org/schema) format |
 | Handle, availability badge, whoami card, stack strip, booking link | [`src/config/site.ts`](src/config/site.ts)                                                             |
-| Freelance offerings                                                | [`src/data/services.ts`](src/data/services.ts)                                                         |
+| Offerings, process, pricing, testimonials                          | [`src/data/services.ts`](src/data/services.ts) (set `showPricing = false` to hide prices)              |
+| The /uses list                                                     | [`src/data/uses.ts`](src/data/uses.ts)                                                                 |
 | About page copy                                                    | The lists at the top of [`src/pages/about.astro`](src/pages/about.astro)                               |
 | Projects                                                           | [`src/content/projects/`](src/content/projects/)                                                       |
 | Production URL                                                     | `site` in `astro.config.mjs`                                                                           |

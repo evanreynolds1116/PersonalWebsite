@@ -16,9 +16,25 @@ import { dateRange, resume } from '../lib/resume';
 const featured = await getFeaturedProjects();
 const recentRoles = resume.work.slice(0, 3);
 const whoamiRows = Object.entries(whoami);
+
+// JSON-LD Person: lets search engines connect the site to your name and profiles.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  url: Astro.site?.href,
+  email: `mailto:${site.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: site.city },
+  sameAs: resume.basics.profiles.map((p) => p.url),
+  knowsAbout: stack,
+};
+// Escape "<" so no value can close the script element.
+const personJson = JSON.stringify(person).replace(/</g, '\\u003c');
 ---
 
 <BaseLayout>
+  <script slot="head" type="application/ld+json" set:html={personJson} is:inline />
   <Container>
     <!-- Hero. The whoami card sits beside the intro on desktop and below it on phones. -->
     <section
@@ -122,8 +138,8 @@ const whoamiRows = Object.entries(whoami);
           command="git log --oneline"
           commandShort="git log"
         />
-        <a href="/resume" class="hidden font-mono text-[15px] text-accent md:inline">
-          full resume →
+        <a href="/resume.pdf" class="hidden font-mono text-[15px] text-accent md:inline">
+          full resume (pdf) ↓
         </a>
       </div>
       <ol class="border-t border-border">
@@ -146,8 +162,8 @@ const whoamiRows = Object.entries(whoami);
           </li>
         ))}
       </ol>
-      <Button href="/resume" variant="ghost" class="text-accent md:hidden">
-        full resume →
+      <Button href="/resume.pdf" variant="ghost" class="text-accent md:hidden">
+        full resume (pdf) ↓
       </Button>
     </section>
 
@@ -157,13 +173,17 @@ const whoamiRows = Object.entries(whoami);
       aria-labelledby="svc-title"
       class="flex flex-col gap-4 pt-14 md:gap-8 md:pt-24"
     >
-      <PromptHeading
-        id="svc-title"
-        path="~/freelance"
-        command="cat services.txt"
-        commandShort="cat services"
-        class="mb-1 md:mb-0"
-      />
+      <div class="mb-1 flex flex-wrap items-baseline justify-between gap-4 md:mb-0">
+        <PromptHeading
+          id="svc-title"
+          path="~/freelance"
+          command="cat services.txt"
+          commandShort="cat services"
+        />
+        <a href="/services" class="hidden font-mono text-[15px] text-accent md:inline">
+          services &amp; pricing →
+        </a>
+      </div>
       <ol class="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))] md:gap-6">
         {services.map((service, index) => (
           <li class="flex flex-col gap-1.5 rounded-xl border border-border p-5 md:gap-3 md:p-7">
@@ -175,6 +195,9 @@ const whoamiRows = Object.entries(whoami);
           </li>
         ))}
       </ol>
+      <Button href="/services" variant="ghost" class="text-accent md:hidden">
+        services &amp; pricing →
+      </Button>
     </section>
 
     <CtaBand
