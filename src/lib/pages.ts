@@ -20,6 +20,15 @@ export interface PageEntry {
   };
 }
 
+/**
+ * The public URL path for a page, without `.html` or a trailing slash. With
+ * `build.format: 'file'`, `Astro.url.pathname` is `/projects.html` or `/index.html`
+ * at build time but `/projects` in dev; both become `/projects` and `/`.
+ */
+export function pagePath(url: URL): string {
+  return url.pathname.replace(/(\/index)?\.html$/, '').replace(/\/+$/, '') || '/';
+}
+
 /** Share-image file name for a URL path: `/` → `home`, `/projects/x` → `projects-x`. */
 export function ogKey(pathname: string): string {
   return pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
