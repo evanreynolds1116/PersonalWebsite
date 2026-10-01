@@ -1,31 +1,35 @@
 {
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
-    "name": "[Your Name]",
-    "label": "[Senior Software Engineer]",
-    "email": "[you@example.com]",
+    "name": "Evan Reynolds",
+    "label": "Senior Software Engineer",
+    "email": "evanreynolds95@proton.me",
     "url": "https://yourname.dev",
     "summary": "[Two or three sentences: what you build, the kind of teams you do your best work in, and the result you're known for.]",
     "location": {
-      "city": "[Your city]",
-      "region": "[Region]",
-      "countryCode": "[CC]"
+      "city": "Nashville",
+      "region": "TN",
+      "countryCode": "US"
     },
     "profiles": [
-      { "network": "GitHub", "username": "yourname", "url": "https://github.com/yourname" },
+      {
+        "network": "GitHub",
+        "username": "evanreynolds1116",
+        "url": "https://github.com/evanreynolds1116"
+      },
       {
         "network": "LinkedIn",
-        "username": "yourname",
-        "url": "https://www.linkedin.com/in/yourname"
+        "username": "evanmaxreynolds",
+        "url": "https://www.linkedin.com/in/evanmaxreynolds"
       }
     ]
   },
   "work": [
     {
-      "name": "[Company]",
-      "position": "[Role]",
+      "name": "HCA Healthcare",
+      "position": "Application Engineer",
       "url": "https://example.com",
-      "startDate": "[20XX]",
+      "startDate": "2024",
       "summary": "[Biggest impact in one line, with a number.]",
       "highlights": [
         "[Impact bullet with a number: what you shipped, and what it changed.]",
@@ -34,18 +38,18 @@
       ]
     },
     {
-      "name": "[Company]",
+      "name": "Momentum Technology",
       "position": "[Role]",
-      "startDate": "[20XX]",
-      "endDate": "[20XX]",
+      "startDate": "2023",
+      "endDate": "2024",
       "summary": "[Biggest impact in one line, with a number.]",
       "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
     },
     {
-      "name": "[Company]",
-      "position": "[Role]",
-      "startDate": "[20XX]",
-      "endDate": "[20XX]",
+      "name": "Accenture",
+      "position": "Associate Software Engineer",
+      "startDate": "2021",
+      "endDate": "2023",
       "summary": "[Biggest impact in one line, with a number.]",
       "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
     }
