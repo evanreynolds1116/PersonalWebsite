@@ -1,9 +1,10 @@
 ---
 import { hireLink, navLinks, site } from '../config/site';
+import { pagePath } from '../lib/pages';
 import Button from './Button.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const path = pagePath(Astro.url);
 const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 

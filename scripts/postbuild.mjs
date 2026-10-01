@@ -2,7 +2,7 @@
  * Runs after `astro build`. Serves dist/ with Astro's preview server and uses
  * Playwright (headless Chromium) to:
  *
- *   1. Screenshot each Open Graph template in dist/og-src/<key>/ to dist/og/<key>.png,
+ *   1. Screenshot each Open Graph template in dist/og-src/<key>.html to dist/og/<key>.png,
  *      then delete the templates so they never ship.
  *   2. Print /resume to dist/resume.pdf with the site's print stylesheet.
  *   3. Check the output: every page's og:image exists, and every indexable page
@@ -41,9 +41,10 @@ try {
 
 try {
   // 1. Open Graph images
+  // One template per page: dist/og-src/<key>.html (build.format: 'file').
   const keys = (await fs.readdir(ogSrc, { withFileTypes: true }))
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name);
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
+    .map((entry) => entry.name.slice(0, -'.html'.length));
   await fs.mkdir(ogOut, { recursive: true });
 
   const ogPage = await browser.newPage({
@@ -51,7 +52,7 @@ try {
     colorScheme: 'dark',
   });
   for (const key of keys) {
-    await ogPage.goto(`${base}/og-src/${key}/`, { waitUntil: 'networkidle' });
+    await ogPage.goto(`${base}/og-src/${key}`, { waitUntil: 'networkidle' });
     await ogPage.evaluate(() => document.fonts.ready);
     await ogPage.screenshot({ path: path.join(ogOut, `${key}.png`) });
   }
@@ -61,7 +62,7 @@ try {
   // 2. Resume PDF, from the same page and print styles as /resume
   const resumePage = await browser.newPage();
   await resumePage.emulateMedia({ media: 'print', colorScheme: 'light' });
-  await resumePage.goto(`${base}/resume/`, { waitUntil: 'networkidle' });
+  await resumePage.goto(`${base}/resume`, { waitUntil: 'networkidle' });
   await resumePage.evaluate(() => document.fonts.ready);
   await resumePage.pdf({
     path: path.join(dist, 'resume.pdf'),

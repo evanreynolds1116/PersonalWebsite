@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Built and launch-ready; not deployed yet.** Every page is built, CI passes on `main`, and Lighthouse (mobile) scores 100 in every category. The site goes live once Cloudflare is connected (see [Next up](#next-up)). Content is still placeholder text in `[brackets]`.
+**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Content is still placeholder text in `[brackets]`.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -17,7 +17,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 The launch checklist from the README. These need your accounts or content:
 
-- [ ] **Cloudflare:** create the Pages project, an API token, and add `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (secrets) and `CLOUDFLARE_PAGES_PROJECT` (variable) to the GitHub repo. Deploys start on the next push to `main`.
+- [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
 - [ ] **Domain:** buy it, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` and `handle` in `src/config/site.ts`.
 - [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
@@ -34,6 +34,9 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Merged PR [#1](https://github.com/evanreynolds1116/PersonalWebsite/pull/1) (Phases 2–4) into `main` as `da3779c`. CI passed on the PR and again on `main`. The deploy step is skipped until Cloudflare is configured.
 - Deleted the `phase-2`, `phase-3` and `phase-4` branches after confirming they were fully merged.
 - Installed the GitHub CLI (`gh` 2.102.0) and signed it in, so PRs and CI can be checked from the terminal.
+- Connected Cloudflare Pages (project `evanreynolds-site`). First production deploy from `5e55e6a` succeeded; all pages, the PDF, share images, sitemap and security headers checked live.
+- Fixed trailing-slash redirects: Cloudflare 308-redirected `/projects` to `/projects/`, so every internal link and canonical URL pointed at a redirect. Switched to `build.format: 'file'` so the no-slash URLs are served directly, with a shared `pagePath()` helper for canonical URLs and the nav.
+- Heads-up: GitHub moves `ubuntu-latest` to Ubuntu 26 on 2026-10-19. If the Chromium install step breaks, pin the workflow to `ubuntu-24.04`.
 
 ### 2026-09-30
 

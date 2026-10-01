@@ -13,6 +13,11 @@ const SITE_URL = 'https://yourname.dev';
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL,
+  // URLs have no trailing slash (/projects, not /projects/). Emitting projects.html rather than
+  // projects/index.html makes Cloudflare Pages serve /projects directly instead of 308-redirecting
+  // to /projects/, so links, canonical URLs and the sitemap all point at the served URL.
+  build: { format: 'file' },
+  trailingSlash: 'never',
   integrations: [mdx()],
   security: {
     // Astro hashes the site's own scripts and styles into a <meta> Content-Security-Policy.

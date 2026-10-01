@@ -4,7 +4,7 @@ import CommandPalette from '../components/CommandPalette.astro';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
 import { site } from '../config/site';
-import { ogKey } from '../lib/pages';
+import { ogKey, pagePath } from '../lib/pages';
 import '../styles/global.css';
 
 interface Props {
@@ -26,8 +26,8 @@ const {
   ogType = 'website',
 } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
-// No trailing slash, matching sitemap.xml.
-const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+// The served URL (no .html, no trailing slash), matching sitemap.xml.
+const pathname = pagePath(Astro.url);
 const canonical = new URL(pathname, Astro.site);
 // Generated after the build by scripts/postbuild.mjs from src/pages/og-src.
 const ogImage = new URL(`/og/${ogKey(pathname)}.png`, Astro.site);
