@@ -1,0 +1,92 @@
+---
+title: 'Draft Day'
+summary: 'A real-time app for my fantasy football league’s sealed-bid auction and snake draft: every manager bids from their phone, bids flip on every screen at once, and a TV board runs the room.'
+outcome: 'Aims to cut a 6–8 hour whiteboard draft to about 3 hours, backed by 350 automated tests.'
+order: 2
+featured: true
+stack: ['typescript', 'react', 'node', 'fastify', 'socket.io', 'postgres']
+windowTitle: 'draft-day/big-board'
+role: 'Solo: spec, engine, server, web app'
+timeline: '3 days, Sep 2026'
+team: 'Solo, for my 12-team league'
+links:
+  github: 'https://github.com/evanreynolds1116/FantasyFootballApp'
+results:
+  - value: '350'
+    label: 'Automated tests across the rules engine, server and web app'
+  - value: '3 days'
+    label: 'From first commit to full 12-team mock drafts finishing cleanly'
+  - value: '~60 ms'
+    label: 'To save and acknowledge each draft action against a hosted database'
+cover: '../../assets/projects/draft-day/board-auction.png'
+coverAlt: 'The Draft Day big board during the auction: the player up for bid with a 0:55 clock, 6 of 12 teams locked in, the round’s lots, and every team’s budget.'
+---
+
+import Decision from '../../components/mdx/Decision.astro';
+import Decisions from '../../components/mdx/Decisions.astro';
+import Figure from '../../components/mdx/Figure.astro';
+import architecture from '../../assets/projects/draft-day/architecture.svg';
+import reveal from '../../assets/projects/draft-day/board-reveal.png';
+
+## The problem
+
+My 12-team fantasy football league drafts in two phases: a sealed-bid auction for the first eight roster spots, then a snake draft for the rest. On a whiteboard that takes 6–8 hours. Every bid has to be collected privately, compared, and announced; ties need re-bids; budgets, position limits and teams that run out of money all need tracking by hand.
+
+Off-the-shelf draft apps don't support this format, so the goal was software that runs the league's exact rules and gets the draft down to about 3 hours, without changing how the league plays.
+
+## My role
+
+I built it solo: the product spec (every rule and edge case written down first), a pure rules engine, the real-time server and database, and the web app for phones, laptops and a TV big board, plus a commissioner console for pausing, undoing and fixing mistakes during the draft.
+
+## Approach
+
+Every manager nominates, bids and picks from their own device. When the bid clock runs out, sealed bids flip on every screen at the same moment, and the app handles ties, budgets, position limits, broke teams and the switch to the snake on its own.
+
+- **A pure rules engine.** Every rule is a pure function, `reduce(state, action, ctx) → { state, events }`. The engine never reads the clock, uses randomness or does I/O; time and a random source are passed in. That makes every rule unit-testable and every draft replayable from its action log. The server, the web app's greyed-out choices and the settings form all reuse the engine's own checks, so the rules exist in one place.
+- **One authoritative server.** Clients only send intents ("I bid $47"). The server checks who's asking, runs the intent through the engine under a per-draft lock, saves the result, then broadcasts it. Each intent is stamped with the time it arrived, so a bid sent just before the buzzer counts even if it's processed a moment later.
+- **Bids stay secret until the reveal.** Bid amounts are removed at the boundary where the server builds what clients receive. Before a reveal, everyone sees only "team X is in". Afterwards, only the amounts the reveal showed are ever sent. Tests inspect every outgoing message for leaks.
+- **Nothing is lost on a restart.** Every action is saved before it's broadcast, and clocks are stored as end times and re-armed when the server starts.
+
+<Figure
+  title="architecture.svg"
+  src={architecture}
+  alt="Diagram: managers' phones and laptops send intents to the draft server, which checks who's asking, runs the rules engine under a per-draft lock, saves each action to Postgres, then broadcasts snapshots to the managers and the read-only big board."
+  caption="Clients send intents; the server checks them, runs the engine, saves to Postgres first, then broadcasts snapshots with bid amounts removed until the reveal."
+/>
+
+<Figure
+  title="draft-day/big-board — reveal"
+  src={reveal}
+  alt="The big board after a reveal: the winning team and price, two runner-up bids, six bids that stay sealed and three passes, the winner's budget before and after, and the next lot's countdown."
+  caption="Every screen plays the same reveal: the winner and the top runner-up bids. The rest stay sealed for good."
+/>
+
+## Key decisions
+
+<Decisions>
+  <Decision title="A pure engine, with time and randomness passed in">
+    Every rule can be tested in isolation and a whole draft can be replayed from its log. The cost:
+    more plumbing, since anything that depends on the clock or a coin flip has to go through the
+    engine's inputs.
+  </Decision>
+  <Decision title="The server decides everything">
+    Phones' clocks and network delays can't change an outcome, and nobody can act for another team.
+    The trade-off is that every action needs a round trip, so server latency matters.
+  </Decision>
+  <Decision title="Clients reload the full snapshot after every event">
+    Instead of each client applying changes itself, it asks for a fresh snapshot, so the server
+    stays the single source of truth and clients can't drift. It sends more data per event, which is
+    fine for 12 teams and a TV.
+  </Decision>
+  <Decision title="Save each action as one SQL statement">
+    Each action's changes travel as a single JSON parameter applied with data-modifying CTEs: atomic
+    without a separate transaction, and only two database round trips. That keeps a single action at
+    about 60 ms against a remote database.
+  </Decision>
+</Decisions>
+
+## Results
+
+The rules engine, server and every screen were built in three days, with 350 automated tests: 246 for the engine (including a full scripted 12-team draft), 51 server integration tests (including "restart mid-lot loses nothing") and 53 for the web app. Two full-length 12-team scripted mock drafts and a manual mock draft with a real NFL player pool all finished cleanly, and the league's walkthrough came back with no notes.
+
+What's next: hosting, a real mock draft with the league on their phones, and import and export with MyFantasyLeague. One known gap: when all 12 teams bid at the same instant, the last acknowledgement takes about 0.7 seconds against the remote development database, above the 300 ms target. A database hosted next to the server should close that gap.

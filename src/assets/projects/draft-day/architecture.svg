@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="720" viewBox="0 0 1440 720" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <rect width="1440" height="720" fill="#111820"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b98a5"/>
+    </marker>
+  </defs>
+
+  <!-- Clients -->
+  <rect x="40" y="150" width="280" height="150" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="180" y="200" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="700">12 managers</text>
+  <text x="180" y="240" text-anchor="middle" fill="#8b98a5" font-size="18">phones &amp; laptops</text>
+  <text x="180" y="268" text-anchor="middle" fill="#8b98a5" font-size="18">React app</text>
+
+  <rect x="40" y="420" width="280" height="150" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="180" y="470" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="700">Big board</text>
+  <text x="180" y="510" text-anchor="middle" fill="#8b98a5" font-size="18">TV / projector</text>
+  <text x="180" y="538" text-anchor="middle" fill="#8b98a5" font-size="18">read-only, no login</text>
+
+  <!-- Server -->
+  <rect x="440" y="70" width="560" height="580" rx="16" fill="#0b0f14" stroke="#7ee787" stroke-width="2"/>
+  <text x="720" y="118" text-anchor="middle" fill="#7ee787" font-size="24" font-weight="700">Draft server</text>
+  <text x="720" y="150" text-anchor="middle" fill="#8b98a5" font-size="18">Node · Fastify · Socket.IO</text>
+
+  <rect x="480" y="185" width="480" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="220" text-anchor="middle" fill="#e6edf3" font-size="20">1. check who's asking</text>
+  <text x="720" y="248" text-anchor="middle" fill="#8b98a5" font-size="17">only your own team · stamp arrival time</text>
+
+  <rect x="480" y="290" width="480" height="80" rx="10" fill="#111820" stroke="#e3b341" stroke-width="2"/>
+  <text x="720" y="325" text-anchor="middle" fill="#e3b341" font-size="20">2. rules engine, per-draft lock</text>
+  <text x="720" y="353" text-anchor="middle" fill="#8b98a5" font-size="17">reduce(state, action) → state, events</text>
+
+  <rect x="480" y="395" width="480" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="430" text-anchor="middle" fill="#e6edf3" font-size="20">3. save first</text>
+  <text x="720" y="458" text-anchor="middle" fill="#8b98a5" font-size="17">one SQL statement per action</text>
+
+  <rect x="480" y="500" width="480" height="110" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="538" text-anchor="middle" fill="#e6edf3" font-size="20">4. broadcast, re-arm the clock</text>
+  <text x="720" y="566" text-anchor="middle" fill="#8b98a5" font-size="17">bid amounts scrubbed until reveal</text>
+  <text x="720" y="592" text-anchor="middle" fill="#8b98a5" font-size="17">clocks from saved end times</text>
+
+  <!-- Database -->
+  <rect x="1110" y="360" width="290" height="140" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="1255" y="410" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="700">Postgres</text>
+  <text x="1255" y="448" text-anchor="middle" fill="#8b98a5" font-size="17">every action saved</text>
+  <text x="1255" y="474" text-anchor="middle" fill="#8b98a5" font-size="17">restart loses nothing</text>
+
+  <!-- Arrows -->
+  <g stroke="#8b98a5" stroke-width="2.5" fill="none">
+    <path d="M320 225 L475 225" marker-end="url(#arrow)"/>
+    <path d="M475 555 L325 495" marker-end="url(#arrow)"/>
+    <path d="M475 570 L325 250" marker-end="url(#arrow)"/>
+    <path d="M960 435 L1105 430" marker-end="url(#arrow)"/>
+    <path d="M720 265 L720 285" marker-end="url(#arrow)"/>
+    <path d="M720 370 L720 390" marker-end="url(#arrow)"/>
+    <path d="M720 475 L720 495" marker-end="url(#arrow)"/>
+  </g>
+  <text x="397" y="212" text-anchor="middle" fill="#8b98a5" font-size="15">intents</text>
+  <text x="380" y="600" text-anchor="middle" fill="#8b98a5" font-size="15">snapshots</text>
+</svg>
