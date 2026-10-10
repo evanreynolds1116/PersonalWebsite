@@ -10,7 +10,7 @@ export const site = {
   role: resume.basics.label,
   email: resume.basics.email,
   /** Shown as the `~/handle` logo; match your GitHub/LinkedIn handle. */
-  handle: 'yourname',
+  handle: 'EvanReynolds',
   city: resume.basics.location.city,
   description: '[Role] who builds [what you build] for [who you help].',
   locale: 'en',
@@ -39,7 +39,7 @@ export const site = {
 export const whoami = {
   role: site.role,
   focus: '[Backend · APIs · Cloud]',
-  experience: '[X] years',
+  experience: '5 years',
   based: `${site.city} · remote-friendly`,
   status: 'available [month]',
 } as const;
