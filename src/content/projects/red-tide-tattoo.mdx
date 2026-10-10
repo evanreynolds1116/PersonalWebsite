@@ -1,0 +1,87 @@
+---
+title: 'Red Tide Tattoo Co.'
+summary: 'A fast new website for a tattoo studio in Murrieta, CA, with online consent forms, appointment requests and a live Instagram feed. Built and launched in a week, and it costs nothing to host.'
+outcome: 'Replaced a paid WordPress plan with a site that scores 100 on accessibility and costs $0/month to host.'
+order: 1
+featured: true
+stack: ['astro', 'cloudflare-workers', 'javascript', 'resend', 'instagram-api']
+windowTitle: 'redtidetattooco.com'
+role: 'Solo: design, build, launch'
+timeline: '1 week, Oct 2026'
+team: 'Solo, for the shop owner'
+links:
+  live: 'https://redtidetattooco.com'
+results:
+  - value: '1 week'
+    label: 'From first commit to launch on the shop’s own domain'
+  - value: '100'
+    label: 'Lighthouse accessibility, best practices and SEO (mobile)'
+  - value: '$0'
+    label: 'Monthly hosting, on Cloudflare’s and Resend’s free tiers'
+cover: '../../assets/projects/red-tide-tattoo/home.jpg'
+coverAlt: 'The Red Tide Tattoo Co. home page: the studio’s flash-covered walls behind the shop name, an “Open now” badge and a “Find your artist” button.'
+---
+
+import Decision from '../../components/mdx/Decision.astro';
+import Decisions from '../../components/mdx/Decisions.astro';
+import Figure from '../../components/mdx/Figure.astro';
+import architecture from '../../assets/projects/red-tide-tattoo/architecture.svg';
+import booking from '../../assets/projects/red-tide-tattoo/book.jpg';
+
+## The problem
+
+Red Tide Tattoo Co. has been tattooing in Murrieta, California since 2006. Its website ran on a paid WordPress.com Business plan, and the parts that mattered most to the shop were its consent forms: clients fill them in on their phones at the counter by scanning QR codes printed in the studio, so those addresses could not change.
+
+## My role
+
+I did everything end to end: the design, the front end, the server code for the forms and the Instagram feed, moving the domain's DNS to Cloudflare without disrupting the shop's existing email, and setting up email delivery for the forms. I also wrote a plain-language guide so the owner can update artists, hours, holiday closures and FAQ text without me.
+
+## Approach
+
+The site is a static [Astro](https://astro.build) build served by a single Cloudflare Worker, which only runs code for the three things that need a server: consent forms, appointment requests and the Instagram feed.
+
+- **Consent forms.** Tattoo, piercing and minor consent forms, each defined in one JSON file. The same file renders the form and validates the submission on the server, so the questions and the checks can't drift apart. Submissions, including photos of the client's ID, are emailed to the shop and never stored.
+- **Appointment requests.** Clients choose tattoo or piercing, pick an artist or the piercer, describe their idea and attach up to five reference images. Each artist can share a link that pre-selects them, and the shop replies straight from the email.
+- **Instagram feed.** A nightly job pulls the shop's latest posts into a cache and renews the access token every week, so the page never waits on Instagram.
+- **Nothing breaks on launch day.** Every old address, including the ones on printed QR codes, either still works or redirects to its new page.
+
+<Figure
+  title="architecture.svg"
+  src={architecture}
+  alt="Diagram: visitors reach one Cloudflare Worker that serves the static pages and handles the consent and booking forms, which email the shop through Resend without storing anything. A nightly job syncs the Instagram feed into Workers KV."
+  caption="One Worker serves the static site and three small server features. Forms go to the shop's inbox; the Instagram feed is cached nightly."
+/>
+
+<Figure
+  title="redtidetattooco.com/book"
+  src={booking}
+  alt="The appointment request form: name, email, phone and optional Instagram handle, then a choice between tattoo and piercing."
+  caption="Appointment requests go straight to the shop's inbox, and replying answers the client."
+/>
+
+## Key decisions
+
+<Decisions>
+  <Decision title="Email submissions instead of storing them">
+    Consent forms include medical answers and ID photos. Sending them straight to the shop's inbox
+    means there's no database of sensitive data to secure. The trade-off: no dashboard, so the inbox
+    is the record.
+  </Decision>
+  <Decision title="One JSON file per form, used by both the page and the server">
+    Waiver wording and questions live in a single file the owner can review, and the server
+    validates against that same file. The cost: a small custom form renderer instead of an
+    off-the-shelf form service.
+  </Decision>
+  <Decision title="Send form email from a separate subdomain">
+    Form emails come from `mail.redtidetattooco.com`, so their reputation is kept separate from the
+    shop's own `info@` mailbox. It took a few extra DNS records.
+  </Decision>
+  <Decision title="Cache Instagram nightly instead of embedding it">
+    The feed loads from the site's own cache, with no third-party embed scripts or trackers. Posts
+    can be up to a day late, which is fine for a portfolio feed.
+  </Decision>
+</Decisions>
+
+## Results
+
+The site launched on the shop's domain on October 10, 2026, a week after the first commit. The old QR codes kept working, and the paid WordPress plan was left to expire: hosting now runs on free tiers. On a mobile Lighthouse audit of the live site, the home page scores 94 for performance and 100 for accessibility, best practices and SEO, and the booking page scores 97 for performance.

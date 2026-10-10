@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="720" viewBox="0 0 1440 720" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <rect width="1440" height="720" fill="#111820"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b98a5"/>
+    </marker>
+  </defs>
+
+  <!-- Visitors -->
+  <rect x="40" y="250" width="270" height="220" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="175" y="300" text-anchor="middle" fill="#e6edf3" font-size="26" font-weight="700">Visitors</text>
+  <text x="175" y="345" text-anchor="middle" fill="#8b98a5" font-size="19">phones &amp; laptops</text>
+  <text x="175" y="380" text-anchor="middle" fill="#8b98a5" font-size="19">QR codes at</text>
+  <text x="175" y="408" text-anchor="middle" fill="#8b98a5" font-size="19">the front counter</text>
+
+  <!-- Cloudflare Worker -->
+  <rect x="420" y="70" width="520" height="580" rx="16" fill="#0b0f14" stroke="#7ee787" stroke-width="2"/>
+  <text x="680" y="118" text-anchor="middle" fill="#7ee787" font-size="24" font-weight="700">Cloudflare Worker</text>
+  <text x="680" y="150" text-anchor="middle" fill="#8b98a5" font-size="18">one deploy · free tier</text>
+
+  <rect x="460" y="185" width="440" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="680" y="220" text-anchor="middle" fill="#e6edf3" font-size="20">static pages</text>
+  <text x="680" y="248" text-anchor="middle" fill="#8b98a5" font-size="17">Astro build · forms from JSON</text>
+
+  <rect x="460" y="290" width="440" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="680" y="325" text-anchor="middle" fill="#e6edf3" font-size="20">POST /api/consent</text>
+  <text x="680" y="353" text-anchor="middle" fill="#8b98a5" font-size="17">validate against the same JSON</text>
+
+  <rect x="460" y="395" width="440" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="680" y="430" text-anchor="middle" fill="#e6edf3" font-size="20">POST /api/booking</text>
+  <text x="680" y="458" text-anchor="middle" fill="#8b98a5" font-size="17">artist picker · reference images</text>
+
+  <rect x="460" y="500" width="440" height="110" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="680" y="538" text-anchor="middle" fill="#e6edf3" font-size="20">/ig/* + nightly cron</text>
+  <text x="680" y="566" text-anchor="middle" fill="#8b98a5" font-size="17">sync feed · renew token weekly</text>
+  <text x="680" y="592" text-anchor="middle" fill="#8b98a5" font-size="17">serve from cache</text>
+
+  <!-- Services -->
+  <rect x="1050" y="250" width="350" height="140" rx="14" fill="#0b0f14" stroke="#e3b341" stroke-width="2"/>
+  <text x="1225" y="295" text-anchor="middle" fill="#e3b341" font-size="24" font-weight="700">Resend</text>
+  <text x="1225" y="333" text-anchor="middle" fill="#8b98a5" font-size="17">email → shop inbox</text>
+  <text x="1225" y="360" text-anchor="middle" fill="#8b98a5" font-size="17">photos attached · nothing stored</text>
+
+  <rect x="1050" y="450" width="350" height="80" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="1225" y="485" text-anchor="middle" fill="#e6edf3" font-size="20">Instagram API</text>
+  <text x="1225" y="512" text-anchor="middle" fill="#8b98a5" font-size="17">@redtidetattooco</text>
+
+  <rect x="1050" y="560" width="350" height="80" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="1225" y="595" text-anchor="middle" fill="#e6edf3" font-size="20">Workers KV</text>
+  <text x="1225" y="622" text-anchor="middle" fill="#8b98a5" font-size="17">cached feed + token</text>
+
+  <!-- Arrows -->
+  <g stroke="#8b98a5" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M310 330 L455 225"/>
+    <path d="M310 360 L455 330"/>
+    <path d="M310 390 L455 435"/>
+    <path d="M900 330 L1045 315"/>
+    <path d="M900 435 L1045 345"/>
+    <path d="M900 540 L1045 492"/>
+    <path d="M900 580 L1045 600"/>
+  </g>
+</svg>
