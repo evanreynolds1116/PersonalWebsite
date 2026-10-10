@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Content is still placeholder text in `[brackets]`.
+**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, and one project case study (Red Tide Tattoo Co.). The rest is still placeholder text in `[brackets]`.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -21,13 +21,27 @@ The launch checklist from the README. These need your accounts or content:
 - [ ] **Domain:** buy it, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` and `handle` in `src/config/site.ts`.
 - [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
-- [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for.
+- [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
+  - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles)
+  - [ ] `resume.json`: summary, impact lines and bullets, HCA's company URL, education, certificates
+  - [x] Project 1: Red Tide Tattoo Co. case study
+  - [ ] Red Tide: add the owner's view of the old site, early results, and what you'd do differently (removed as placeholders before publishing)
+  - [ ] Projects 2 and 3 (still `[Project Two]` / `[Project Three]`)
+  - [ ] Hero line, whoami card, stack strip, services, about, `/uses`, photo
 - [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
 - [ ] **Check the live site:** Lighthouse on the production URL; share a page to check its preview image.
 
 Later (from the plan): a blog once three posts are ready, and a `/now` page.
 
 ## Log
+
+### 2026-10-10
+
+- Added the first real project, [Red Tide Tattoo Co.](https://redtidetattooco.com), a custom site built for a tattoo studio (PR [#4](https://github.com/evanreynolds1116/PersonalWebsite/pull/4), merged as `e5b63eb`; branch deleted). It replaces the `[Project One]` placeholder and is the first featured project.
+  - Case study written from the RedTideTattoo repo's README and worker code: consent forms and their QR-code URLs, appointment requests, nightly Instagram sync, DNS move, four key decisions.
+  - Results measured on the live site: 1 week from first commit to launch, Lighthouse 100 for accessibility, best practices and SEO (performance 94 home, 97 booking), $0/month hosting.
+  - Screenshots of the live home and booking pages, plus an architecture diagram, in `src/assets/projects/red-tide-tattoo/`.
+  - No GitHub link, because the RedTideTattoo repo is private. Placeholder prompts were removed before publishing; add the real text later.
 
 ### 2026-10-01
 
@@ -37,6 +51,9 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Connected Cloudflare Pages (project `evanreynolds-site`). First production deploy from `5e55e6a` succeeded; all pages, the PDF, share images, sitemap and security headers checked live.
 - Fixed trailing-slash redirects: Cloudflare 308-redirected `/projects` to `/projects/`, so every internal link and canonical URL pointed at a redirect. Switched to `build.format: 'file'` so the no-slash URLs are served directly, with a shared `pagePath()` helper for canonical URLs and the nav.
 - Heads-up: GitHub moves `ubuntu-latest` to Ubuntu 26 on 2026-10-19. If the Chromium install step breaks, pin the workflow to `ubuntu-24.04`.
+- Merged the trailing-slash fix, PR [#2](https://github.com/evanreynolds1116/PersonalWebsite/pull/2), as `8002225`, after checking on its preview that `/projects` returns 200 with no redirect.
+- First real content: name, title, email, Nashville TN, GitHub and LinkedIn, and work history (HCA Healthcare, Momentum Technology, Accenture) in `resume.json`. Merged as PR [#3](https://github.com/evanreynolds1116/PersonalWebsite/pull/3) (`90b7c52`) and checked live.
+- Deleted the `fix/no-trailing-slash` and `content/resume-basics` branches after merging.
 
 ### 2026-09-30
 
