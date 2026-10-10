@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, and one project case study (Red Tide Tattoo Co.). The rest is still placeholder text in `[brackets]`.
+**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, the `~/EvanReynolds` handle, and two project case studies (Red Tide Tattoo Co. and Draft Day). The rest is still placeholder text in `[brackets]`.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -18,16 +18,19 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 The launch checklist from the README. These need your accounts or content:
 
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
-- [ ] **Domain:** buy it, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` and `handle` in `src/config/site.ts`.
+- [ ] **Domain:** buy it, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` (the `handle` is already set to `EvanReynolds`).
 - [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
-  - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles)
+  - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles with titles)
   - [ ] `resume.json`: summary, impact lines and bullets, HCA's company URL, education, certificates
   - [x] Project 1: Red Tide Tattoo Co. case study
   - [ ] Red Tide: add the owner's view of the old site, early results, and what you'd do differently (removed as placeholders before publishing)
-  - [ ] Projects 2 and 3 (still `[Project Two]` / `[Project Three]`)
-  - [ ] Hero line, whoami card, stack strip, services, about, `/uses`, photo
+  - [x] Project 2: Draft Day case study
+  - [ ] Draft Day: decide on the real player headshots in the screenshots, and whether to mention AI-assisted development (the public repo has a `CLAUDE.md`)
+  - [ ] Project 3 (still `[Project Three]`)
+  - [x] Handle (`EvanReynolds`) and years of experience in the whoami card
+  - [ ] Hero line, rest of the whoami card (focus, status), stack strip, services, about, `/uses`, photo
 - [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
 - [ ] **Check the live site:** Lighthouse on the production URL; share a page to check its preview image.
 
@@ -42,6 +45,13 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
   - Results measured on the live site: 1 week from first commit to launch, Lighthouse 100 for accessibility, best practices and SEO (performance 94 home, 97 booking), $0/month hosting.
   - Screenshots of the live home and booking pages, plus an architecture diagram, in `src/assets/projects/red-tide-tattoo/`.
   - No GitHub link, because the RedTideTattoo repo is private. Placeholder prompts were removed before publishing; add the real text later.
+- Logged PRs #2–#4 in this file (PR [#5](https://github.com/evanreynolds1116/PersonalWebsite/pull/5), merged as `d2b6f51`).
+- Set the handle to `EvanReynolds` (logo, terminal title bars, share images), the whoami experience to `5 years`, and the Momentum Technology title to Backend Software Engineer (PR [#6](https://github.com/evanreynolds1116/PersonalWebsite/pull/6), merged as `194eabe`).
+- Added the second real project, Draft Day ([FantasyFootballApp](https://github.com/evanreynolds1116/FantasyFootballApp)), a real-time sealed-bid auction and snake draft app for a 12-team fantasy football league (PR [#7](https://github.com/evanreynolds1116/PersonalWebsite/pull/7), merged as `b12c8bb`). It replaces the `[Project Two]` placeholder.
+  - Case study written from the repo's README, commits and test suite: the league's format, pure rules engine, authoritative server, bid secrecy, restart safety, four key decisions.
+  - Results counted from the repo: 350 automated tests (246 engine, 51 server, 53 web), 3 days from first commit to full 12-team mock drafts, ~60 ms per action. States that it isn't hosted yet and the known 0.7 s gap under simultaneous bids.
+  - Big board auction and reveal screenshots from the repo, plus an architecture diagram, in `src/assets/projects/draft-day/`. Links to the public GitHub repo.
+- Deleted each branch after its PR merged; `main` is the only branch.
 
 ### 2026-10-01
 
