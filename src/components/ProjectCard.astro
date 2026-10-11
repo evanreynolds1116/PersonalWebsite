@@ -8,9 +8,11 @@ interface Props {
   project: Project;
   /** Heading level inside the page's outline. */
   headingLevel?: 'h2' | 'h3';
+  /** Load the screenshot eagerly at high priority; set on the first above-the-fold card only. */
+  priority?: boolean;
 }
 
-const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { project, headingLevel: Heading = 'h3', priority = false } = Astro.props;
 const { title, outcome, stack, windowTitle, links, cover, coverAlt } = project.data;
 const titleId = `project-${project.id}`;
 ---
@@ -23,7 +25,7 @@ const titleId = `project-${project.id}`;
   class="flex flex-col"
   data-tags={stack.join(' ')}
 >
-  <Screenshot src={cover} alt={coverAlt} />
+  <Screenshot src={cover} alt={coverAlt} priority={priority} />
   <div class="flex grow flex-col gap-2.5 p-5 md:gap-3 md:p-6">
     <Heading id={titleId} class="font-mono text-[19px] leading-snug font-bold md:text-xl">
       {title}
