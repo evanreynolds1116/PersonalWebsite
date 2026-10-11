@@ -62,8 +62,8 @@ const tags = allTags(projects);
     </div>
 
     <div id="project-grid" class="grid gap-6 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-      {projects.map((project) => (
-        <ProjectCard project={project} headingLevel="h2" />
+      {projects.map((project, index) => (
+        <ProjectCard project={project} headingLevel="h2" priority={index === 0} />
       ))}
     </div>
 
