@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, the `~/EvanReynolds` handle, and three project case studies (Red Tide Tattoo Co., Draft Day and Music Junkie), so no placeholder projects remain. The rest is still placeholder text in `[brackets]`.
+**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: the full resume (title "Software Engineer", summary, three roles with bullets, education, skills), the hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, and three project case studies (Red Tide Tattoo Co., Draft Day and Music Junkie), and the services page (three offerings, process, prices and testimonials hidden). Still placeholder text in `[brackets]`: the about page, `/uses`, and the photo.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -23,21 +23,38 @@ The launch checklist from the README. These need your accounts or content:
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
   - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles with titles)
-  - [ ] `resume.json`: summary, impact lines and bullets, HCA's company URL, education, certificates
+  - [x] `resume.json`: summary, role summaries and bullets, company links, education, skills (from the PDF resume; no certificates)
   - [x] Project 1: Red Tide Tattoo Co. case study
   - [ ] Red Tide: add the owner's view of the old site, early results, and what you'd do differently (removed as placeholders before publishing)
   - [x] Project 2: Draft Day case study
-  - [ ] Draft Day: decide on the real player headshots in the screenshots, and whether to mention AI-assisted development (the public repo has a `CLAUDE.md`)
+  - [ ] Draft Day: decide on the real player headshots in the screenshots. (Decided 2026-10-11: case studies don't describe the AI-assisted workflow, even though the PDF resume does.)
   - [x] Project 3: Music Junkie case study
-  - [ ] Music Junkie: confirm you're happy publishing your real concert history in the screenshots, and whether to mention AI-assisted development (the repo has `CLAUDE.md` and `AGENTS.md`)
+  - [ ] Music Junkie: confirm you're happy publishing your real concert history in the screenshots
+  - [ ] PDF resume: its Music Junkie section (event sourcing, Prisma, NextAuth, recommendations) doesn't match the ConcertApp repo or the case study (Supabase, row-level security, setlist.fm)
   - [x] Handle (`EvanReynolds`) and years of experience in the whoami card
-  - [ ] Hero line, rest of the whoami card (focus, status), stack strip, services, about, `/uses`, photo
+  - [x] Hero line, whoami focus and status, availability badge, stack strip
+  - [ ] Confirm "remote-friendly" in the whoami card (not from the resume)
+  - [x] Services: three offerings, process and timelines (prices hidden until decided; testimonials hidden until you have real, permitted quotes)
+  - [ ] Review the services timelines and process promises (estimates)
+  - [ ] About, `/uses`, photo
 - [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
 - [ ] **Check the live site:** Lighthouse on the production URL; share a page to check its preview image.
 
 Later (from the plan): a blog once three posts are ready, and a `/now` page.
 
 ## Log
+
+### 2026-10-11
+
+- Filled in most of the remaining placeholders from the PDF resume (PR [#11](https://github.com/evanreynolds1116/PersonalWebsite/pull/11), merged as `b9433a4`; branch deleted).
+  - Title changed from "Senior Software Engineer" to "Software Engineer" to match the resume, across the hero, whoami card, page titles, resume page and share images.
+  - Hero line plus a Badge Pay sentence; whoami focus "Full-stack development · APIs · AI agents" and status "available now"; availability "Open to software/data/analytics engineering roles · Taking select freelance work"; stack strip from the resume (Go and AWS removed).
+  - `resume.json`: summary, three roles with exact months, HCA's six strongest bullets and Momentum's and Accenture's in full, HCA and Accenture links, education (Nashville Software School, Irvine Valley College), seven skill groups; the placeholder certificate removed.
+  - The resume page and PDF show each role's bullets without repeating its one-line summary (the home timeline still uses it). Education no longer needs a degree type, and same-year ranges show a single year.
+  - Left off on purpose: phone number (public site), dbt (coursework).
+  - The resume PDF is 3 pages with every bullet included.
+- Made the hero line more general: "Software engineer who builds reliable data pipelines, APIs and full-stack web apps, from enterprise systems to small-business sites." Removed the Badge Pay sentence from the hero (it stays on the resume and home timeline).
+- Filled in the services page: three offerings (websites for small businesses, data pipelines & automation, web apps & MVPs) with what's included and typical timelines, the discovery, build and handoff process, and a new intro line. Prices hidden (`showPricing = false`); testimonials hidden until there are real, permitted quotes; "services & pricing" links renamed "services".
 
 ### 2026-10-10
 
@@ -59,6 +76,7 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
   - The README's phone screenshots composed side by side (content unchanged) for the cover and a figure, plus an architecture diagram, in `src/assets/projects/music-junkie/`. Links to the public GitHub repo.
 - Dev-server gotcha: a dev server started before a new project file was added rendered that project's cover as a broken page (`LocalImageUsedWrongly`), because it kept a stale image-import map in memory. Production builds were fine. Fix: restart `npm run dev` after adding a project, and avoid running `npm run build` while a dev server is up, since both write to `.astro/`.
 - Domain research: `evanreynolds.dev` is unregistered and recommended; `evanreynolds.com` is taken.
+- Logged PRs #8–#9 in this file (PR [#10](https://github.com/evanreynolds1116/PersonalWebsite/pull/10), merged as `de19522`).
 - Deleted each branch after its PR merged; `main` is the only branch.
 
 ### 2026-10-01

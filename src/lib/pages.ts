@@ -76,7 +76,7 @@ export async function getPages(): Promise<PageEntry[]> {
         dir: '~/freelance',
         command: 'cat services.txt',
         title: 'Services',
-        subtitle: 'What I build, how an engagement works, and where pricing starts.',
+        subtitle: 'Websites, data pipelines and web apps, and how an engagement works.',
       },
     },
     {
