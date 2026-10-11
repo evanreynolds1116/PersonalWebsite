@@ -151,7 +151,7 @@ Astro generates a Content-Security-Policy `<meta>` tag on every page (`security.
 
 ### Analytics
 
-[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/) is cookie-free, so it needs no consent banner. Set `cloudflareAnalyticsToken` in `src/config/site.ts` and the beacon loads on production builds only. Unset, the site makes no third-party requests at all.
+[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/) is cookie-free, so it needs no consent banner. On `evanreynolds.dev` it uses **automatic setup**: Cloudflare injects the beacon into pages at the edge (for real browsers) and the beacon reports to the same origin (`/cdn-cgi/rum`), both allowed by the site's CSP. `cloudflareAnalyticsToken` in `src/config/site.ts` is for manual setup instead; leave it unset while automatic setup is on, or every visit is counted twice.
 
 ### Command palette
 
@@ -181,8 +181,8 @@ Until the repository variable below is set, the workflow builds and checks but s
 
 These need your accounts or your content, so they're manual:
 
-- [ ] **Domain:** `evanreynolds.dev` is bought (Cloudflare Registrar) and set as `SITE_URL` in `astro.config.mjs`. Remaining: attach it under the Pages project → Custom domains (Cloudflare sets up DNS and HTTPS).
-- [ ] **Analytics:** Cloudflare dashboard → Web Analytics → add the domain, then paste the token into `cloudflareAnalyticsToken` in `src/config/site.ts`.
+- [x] **Domain:** `evanreynolds.dev` (Cloudflare Registrar), attached to the Pages project with HTTPS; `www` redirects to it (Redirect Rule, query string preserved); set as `SITE_URL`.
+- [x] **Analytics:** Cloudflare Web Analytics with automatic setup (no token in the code).
 - [ ] **Contact form:** create a Formspree form for your email and paste its endpoint into `formEndpoint`. Send yourself a test of each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder (see [Editing content](#editing-content)), add screenshots and a photo, and only publish testimonials you have permission for.
 - [ ] **Search:** add the domain in Google Search Console and submit `/sitemap.xml`.

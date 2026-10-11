@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; `evanreynolds.dev` bought, waiting to be attached.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. `SITE_URL` is `https://evanreynolds.dev`; once the domain is attached to the Pages project it serves the site and is indexable, while the `pages.dev` address stays `noindex`. Real content: the full resume, hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, three project case studies, the services page, and the About page with photo and bio. No `[bracketed]` placeholders remain on any page.
+**Live at https://evanreynolds.dev.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. `evanreynolds.dev` is indexable with a valid certificate; `www` redirects to it; the `pages.dev` address stays `noindex`. Cookie-free Web Analytics is on. Real content: the full resume, hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, three project case studies, the services page, and the About page with photo and bio. No `[bracketed]` placeholders remain on any page.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -18,8 +18,8 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 The launch checklist from the README. These need your accounts or content:
 
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
-- [ ] **Domain:** `evanreynolds.dev` bought on Cloudflare Registrar (2026-10-11) and set as `SITE_URL`. Remaining: Workers & Pages → `evanreynolds-site` → Custom domains → add `evanreynolds.dev` (and optionally `www.evanreynolds.dev`).
-- [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
+- [x] **Domain:** `evanreynolds.dev` bought on Cloudflare Registrar and attached to the Pages project (2026-10-11): HTTPS certificate from Google Trust Services, `www` redirects to the root with the query string preserved.
+- [x] **Analytics:** Cloudflare Web Analytics with automatic setup; Cloudflare injects the beacon at the edge, so `cloudflareAnalyticsToken` stays unset (setting it too would double-count).
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
   - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles with titles)
@@ -62,6 +62,9 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Filled in the last placeholder, the `/projects` intro: "A few things I've built, from a small-business website to real-time and social web apps."
 - Removed the `/uses` page entirely: the page, its data file, its sitemap and share-image entry, its Cmd+K palette entry and its README mentions.
 - Bought `evanreynolds.dev` on Cloudflare Registrar. Set `SITE_URL` in `astro.config.mjs` and `url` in `resume.json` to `https://evanreynolds.dev`, so canonical URLs, the sitemap, `robots.txt`, share images and JSON-LD all use it.
+- Shipped the `/uses` removal, the domain change and the `/projects` intro in PR [#15](https://github.com/evanreynolds1116/PersonalWebsite/pull/15), merged as `6d66bfa`.
+- Went live on `evanreynolds.dev`: attached the domain to the Pages project, added a `www` → root redirect rule, and checked the certificate, the pages, the PDF, share images, security headers and that `x-robots-tag: noindex` applies only to `pages.dev`.
+- Turned on Cloudflare Web Analytics with automatic setup. Checked in a real browser: the beacon loads, visits are reported to `/cdn-cgi/rum` (204), and the CSP blocks nothing.
 
 ### 2026-10-10
 

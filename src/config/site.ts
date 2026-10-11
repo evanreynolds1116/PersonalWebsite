@@ -30,8 +30,9 @@ export const site = {
   formEndpoint: 'https://formspree.io/f/[your-form-id]',
   /**
    * Cloudflare Web Analytics site token (cookie-free, so no consent banner).
-   * Dashboard → Analytics & Logs → Web Analytics → add site → copy the token
-   * from the snippet. Not a secret: it ships in every page. Unset = no analytics.
+   * Leave unset: evanreynolds.dev uses Web Analytics' automatic setup, where
+   * Cloudflare injects the beacon at the edge. Setting a token as well would
+   * count every visit twice. Only set it if automatic setup is turned off.
    */
   cloudflareAnalyticsToken: undefined as string | undefined,
 } as const;
