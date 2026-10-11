@@ -55,6 +55,7 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
   - The resume PDF is 3 pages with every bullet included.
 - Made the hero line more general: "Software engineer who builds reliable data pipelines, APIs and full-stack web apps, from enterprise systems to small-business sites." Removed the Badge Pay sentence from the hero (it stays on the resume and home timeline).
 - Filled in the services page: three offerings (websites for small businesses, data pipelines & automation, web apps & MVPs) with what's included and typical timelines, the discovery, build and handoff process, and a new intro line. Prices hidden (`showPricing = false`); testimonials hidden until there are real, permitted quotes; "services & pricing" links renamed "services".
+- The hero and services changes, with this file's update, shipped in PR [#12](https://github.com/evanreynolds1116/PersonalWebsite/pull/12), merged as `3941c14`; branch deleted. `main` is the only branch.
 
 ### 2026-10-10
 
