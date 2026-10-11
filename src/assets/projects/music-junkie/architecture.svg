@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="720" viewBox="0 0 1440 720" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+  <rect width="1440" height="720" fill="#111820"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b98a5"/>
+    </marker>
+  </defs>
+
+  <!-- Web app -->
+  <rect x="40" y="250" width="300" height="220" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="190" y="300" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="700">Web app</text>
+  <text x="190" y="340" text-anchor="middle" fill="#8b98a5" font-size="18">Next.js · Tailwind</text>
+  <text x="190" y="375" text-anchor="middle" fill="#8b98a5" font-size="18">shared types &amp;</text>
+  <text x="190" y="403" text-anchor="middle" fill="#8b98a5" font-size="18">Zod schemas</text>
+  <text x="190" y="438" text-anchor="middle" fill="#8b98a5" font-size="16">(mobile app next)</text>
+
+  <!-- Supabase -->
+  <rect x="440" y="70" width="560" height="580" rx="16" fill="#0b0f14" stroke="#7ee787" stroke-width="2"/>
+  <text x="720" y="118" text-anchor="middle" fill="#7ee787" font-size="24" font-weight="700">Supabase</text>
+  <text x="720" y="150" text-anchor="middle" fill="#8b98a5" font-size="18">Auth · Postgres · Edge Functions</text>
+
+  <rect x="480" y="185" width="480" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="220" text-anchor="middle" fill="#e6edf3" font-size="20">Auth</text>
+  <text x="720" y="248" text-anchor="middle" fill="#8b98a5" font-size="17">who's asking</text>
+
+  <rect x="480" y="290" width="480" height="110" rx="10" fill="#111820" stroke="#e3b341" stroke-width="2"/>
+  <text x="720" y="327" text-anchor="middle" fill="#e3b341" font-size="20">Row-level security</text>
+  <text x="720" y="356" text-anchor="middle" fill="#8b98a5" font-size="17">every read: can_view(viewer, owner)</text>
+  <text x="720" y="382" text-anchor="middle" fill="#8b98a5" font-size="17">private accounts · follow requests</text>
+
+  <rect x="480" y="425" width="480" height="80" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="460" text-anchor="middle" fill="#e6edf3" font-size="20">Postgres</text>
+  <text x="720" y="488" text-anchor="middle" fill="#8b98a5" font-size="17">logs · lineups · stats functions</text>
+
+  <rect x="480" y="530" width="480" height="90" rx="10" fill="#111820" stroke="#1f2a36" stroke-width="2"/>
+  <text x="720" y="566" text-anchor="middle" fill="#e6edf3" font-size="20">setlist-search Edge Function</text>
+  <text x="720" y="594" text-anchor="middle" fill="#8b98a5" font-size="17">festivals · lineups · API key stays here</text>
+
+  <!-- setlist.fm -->
+  <rect x="1100" y="505" width="300" height="140" rx="14" fill="#0b0f14" stroke="#1f2a36" stroke-width="2"/>
+  <text x="1250" y="555" text-anchor="middle" fill="#e6edf3" font-size="24" font-weight="700">setlist.fm</text>
+  <text x="1250" y="592" text-anchor="middle" fill="#8b98a5" font-size="17">search only, cached briefly</text>
+  <text x="1250" y="618" text-anchor="middle" fill="#8b98a5" font-size="17">never stored</text>
+
+  <!-- Arrows -->
+  <g stroke="#8b98a5" stroke-width="2.5" fill="none">
+    <path d="M340 320 L475 228" marker-end="url(#arrow)"/>
+    <path d="M340 360 L475 345" marker-end="url(#arrow)"/>
+    <path d="M340 420 L475 570" marker-end="url(#arrow)"/>
+    <path d="M720 400 L720 420" marker-end="url(#arrow)"/>
+    <path d="M960 575 L1095 575" marker-end="url(#arrow)"/>
+  </g>
+  <text x="372" y="250" text-anchor="middle" fill="#8b98a5" font-size="15">sign in</text>
+  <text x="392" y="330" text-anchor="middle" fill="#8b98a5" font-size="15">reads</text>
+  <text x="380" y="530" text-anchor="middle" fill="#8b98a5" font-size="15">search</text>
+</svg>

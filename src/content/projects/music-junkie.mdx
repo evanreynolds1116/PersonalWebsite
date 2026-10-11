@@ -1,0 +1,90 @@
+---
+title: 'Music Junkie'
+summary: 'A social app for logging the concerts you’ve been to: search setlist.fm for the show, then see your stats and follow friends to find the shows you both attended.'
+outcome: 'Privacy enforced by one database rule, backed by 395 automated checks, including privacy tests proven against deliberately broken rules.'
+order: 3
+featured: true
+stack: ['typescript', 'nextjs', 'supabase', 'postgres', 'tailwind']
+windowTitle: 'music-junkie/web'
+role: 'Solo: spec, database, web app'
+timeline: 'Sep–Oct 2026'
+team: 'Solo, personal project'
+links:
+  github: 'https://github.com/evanreynolds1116/ConcertApp'
+results:
+  - value: '395'
+    label: 'Automated checks: 136 unit tests, 236 database assertions and 23 API tests'
+  - value: '1 rule'
+    label: 'can_view(viewer, owner) decides every read, enforced by Postgres row-level security'
+  - value: '2 days'
+    label: 'From scaffold to the log, stats and social features all working'
+cover: '../../assets/projects/music-junkie/cover.png'
+coverAlt: 'Three phone screens from Music Junkie: a concert log with festival day labels and ratings, adding a Bonnaroo festival day from setlist.fm search, and a stats page with totals and money spent.'
+---
+
+import Decision from '../../components/mdx/Decision.astro';
+import Decisions from '../../components/mdx/Decisions.astro';
+import Figure from '../../components/mdx/Figure.astro';
+import architecture from '../../assets/projects/music-junkie/architecture.svg';
+import screens from '../../assets/projects/music-junkie/screens.png';
+
+## The problem
+
+Music Junkie keeps a log of the concerts you've been to, works out the stats about your concert history, and adds a social layer: follow friends, see their shows, and find the ones you were both at.
+
+The hard part is the data. Real concerts are messy: multi-day festivals, festivals that move venues, touring festivals with one stop per city, and lineups with dozens of artists. And a log of where someone was on which night is personal, so privacy had to be airtight.
+
+## My role
+
+I built it solo: the spec, the database schema and its privacy rules, the setlist.fm search, and the web app. It's a monorepo with shared types and schemas, so a planned React Native app can use the same backend.
+
+## Approach
+
+- **Add a concert from setlist.fm.** Search by artist, venue or festival. For festivals you pick the day you went; multi-day festivals, festivals that change venues and touring festivals like Warped Tour (one result per city) are all handled. Then confirm the lineup, drag to reorder or trim it, and add a rating, ticket price and notes. Anything that isn't on setlist.fm can be entered by hand.
+- **Your log and stats.** Every show, newest first, filterable by artist, year, month, state, city or venue. Stats cover totals, money spent, per-year charts with a table view, and leaderboards for artists, venues, cities and states that link back to a filtered log.
+- **Social.** People search, following, private accounts with follow requests, other people's profiles and stats, an activity feed, and "Also here": the people you follow who were at the same show.
+- **Respecting setlist.fm's terms.** Only a server-side Edge Function calls setlist.fm, so the API key never reaches the browser. Search results are cached for a few minutes and never saved, every page credits setlist.fm, and concert pages link to the headliner's setlist.
+
+<Figure
+  title="architecture.svg"
+  src={architecture}
+  alt="Diagram: the Next.js web app signs in with Supabase Auth, reads data through Postgres row-level security where can_view(viewer, owner) decides every read, and searches setlist.fm through a server-side Edge Function that keeps the API key and never stores results."
+  caption="Every read passes one privacy rule in the database. setlist.fm is only called from the server, and its results are never stored."
+/>
+
+<Figure
+  title="music-junkie/web — concert, charts, leaderboards"
+  src={screens}
+  alt="Three phone screens: a Bonnaroo day's concert page with the full lineup and headliner, concerts and spend per year as bar charts, and the artist leaderboard."
+  caption="A festival day's concert page, per-year charts with a table view, and leaderboards that link back to a filtered log."
+/>
+
+## Key decisions
+
+<Decisions>
+  <Decision title="Enforce privacy in the database, not the UI">
+    Every read goes through one Postgres function, `can_view(viewer, owner)`, applied by row-level
+    security. A bug in a page or an API call can't leak a private account's shows. The cost: every
+    query has to be written and tested against those policies.
+  </Decision>
+  <Decision title="Test the privacy rules by breaking them">
+    The database tests cover every combination of viewer and owner, and were checked against
+    deliberately weakened rules to prove they fail when they should. It's extra work up front for
+    the feature that matters most.
+  </Decision>
+  <Decision title="Call setlist.fm only from an Edge Function">
+    The API key stays on the server and the app controls caching and attribution in one place. The
+    trade-off is one more piece of infrastructure to run and deploy.
+  </Decision>
+  <Decision title="Store what you confirmed, not what setlist.fm returned">
+    A log keeps only your lineup, the venue, the date and setlist.fm links, never song lists. That
+    follows setlist.fm's terms and keeps the data small, but setlists are always a link away rather
+    than in the app.
+  </Decision>
+</Decisions>
+
+## Results
+
+The database, privacy rules, concert search, log, stats and social features were built over two days, with 395 automated checks: 136 Vitest tests for the shared helpers and the search, festival and lineup logic (run against a fake setlist.fm client), 236 pgTAP assertions for the privacy rules, follows, writes, logging, stats and social features, and 23 API smoke tests that check the same rules through Supabase's API.
+
+What's next: polish (loading and error states, accessibility, phone layouts), deploying to hosted Supabase and Vercel, then a React Native app on the same backend.
