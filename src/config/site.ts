@@ -24,10 +24,11 @@ export const site = {
   /** Optional booking link (Cal.com, Calendly…); the contact page hides it when unset. */
   bookingUrl: undefined as string | undefined,
   /**
-   * Formspree endpoint for the contact form. Create a form at formspree.io and
-   * paste its URL here; until then submissions show the error state.
+   * Formspree endpoint for the contact form (form "evanreynolds.dev contact").
+   * Not a secret: it appears in the page source. reCAPTCHA stays off in Formspree;
+   * the honeypot field (_gotcha) handles spam and the CSP would block reCAPTCHA.
    */
-  formEndpoint: 'https://formspree.io/f/[your-form-id]',
+  formEndpoint: 'https://formspree.io/f/mnpjvlgj',
   /**
    * Cloudflare Web Analytics site token (cookie-free, so no consent banner).
    * Leave unset: evanreynolds.dev uses Web Analytics' automatic setup, where
