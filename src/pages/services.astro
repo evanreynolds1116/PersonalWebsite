@@ -13,7 +13,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <BaseLayout
   title="Services"
-  description="Freelance engineering: what I build, how an engagement works, and where pricing starts."
+  description="Freelance websites, data pipelines and web apps: what I build and how an engagement works."
   footerFile="services.txt"
 >
   <Container>
@@ -21,7 +21,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       path="~/freelance"
       command="cat services.txt"
       title="Services"
-      lead="[Who you help and the kind of project you take on, in one sentence.]"
+      lead="Websites, data pipelines and web apps for small businesses and teams: fast, tested and easy to hand off."
     >
       <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
         <Button href={projectInquiryHref}>start a project</Button>
@@ -52,7 +52,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               ))}
             </ul>
             <dl class="mt-auto grid grid-cols-2 gap-4 border-t border-border pt-4 font-mono text-sm">
-              {showPricing && (
+              {showPricing && service.startingFrom && (
                 <div class="flex flex-col gap-1">
                   <dt class="text-muted">from</dt>
                   <dd class="text-highlight">{service.startingFrom}</dd>

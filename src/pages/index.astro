@@ -52,10 +52,7 @@ const personJson = JSON.stringify(person).replace(/</g, '\\u003c');
             _
           </span>
         </h1>
-        <p class="max-w-[34em] text-lg text-muted md:text-xl">
-          {site.description} Right now I'm the sole engineer running HCA Healthcare's Badge Pay
-          platform across 250+ facilities.
-        </p>
+        <p class="max-w-[34em] text-lg text-muted md:text-xl">{site.description}</p>
         <div class="flex flex-col gap-3 md:flex-row md:flex-wrap md:gap-4">
           <Button href="/resume">./view-resume</Button>
           <Button href={projectInquiryHref} variant="ghost">
@@ -182,7 +179,7 @@ const personJson = JSON.stringify(person).replace(/</g, '\\u003c');
           commandShort="cat services"
         />
         <a href="/services" class="hidden font-mono text-[15px] text-accent md:inline">
-          services &amp; pricing →
+          services →
         </a>
       </div>
       <ol class="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(260px,1fr))] md:gap-6">
@@ -197,7 +194,7 @@ const personJson = JSON.stringify(person).replace(/</g, '\\u003c');
         ))}
       </ol>
       <Button href="/services" variant="ghost" class="text-accent md:hidden">
-        services &amp; pricing →
+        services →
       </Button>
     </section>
 

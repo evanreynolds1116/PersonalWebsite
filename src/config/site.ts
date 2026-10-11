@@ -13,7 +13,7 @@ export const site = {
   handle: 'EvanReynolds',
   city: resume.basics.location.city,
   description:
-    'Software engineer who builds the data pipelines behind enterprise payroll, and ships full-stack apps by directing AI coding agents.',
+    'Software engineer who builds reliable data pipelines, APIs and full-stack web apps, from enterprise systems to small-business sites.',
   locale: 'en',
   /** The amber badge in the hero. */
   availability: 'Open to software/data/analytics engineering roles · Taking select freelance work',
