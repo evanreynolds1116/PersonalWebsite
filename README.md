@@ -183,9 +183,9 @@ These need your accounts or your content, so they're manual:
 
 - [x] **Domain:** `evanreynolds.dev` (Cloudflare Registrar), attached to the Pages project with HTTPS; `www` redirects to it (Redirect Rule, query string preserved); set as `SITE_URL`.
 - [x] **Analytics:** Cloudflare Web Analytics with automatic setup (no token in the code).
-- [x] **Contact form:** Formspree form `mnpjvlgj` set as `formEndpoint` in `src/config/site.ts` (reCAPTCHA off; the `_gotcha` honeypot filters spam). Still to do: send a test of each inquiry type (Job / Freelance / Other) from the live site.
+- [x] **Contact form:** Formspree form `mnpjvlgj` set as `formEndpoint` in `src/config/site.ts` (reCAPTCHA off; the `_gotcha` honeypot filters spam). Tested from the live site: messages for each inquiry type arrive.
 - [ ] **Content:** replace every `[bracketed]` placeholder (see [Editing content](#editing-content)), add screenshots and a photo, and only publish testimonials you have permission for.
-- [ ] **Search:** add the domain in Google Search Console and submit `/sitemap.xml`.
+- [x] **Search:** `evanreynolds.dev` verified in Google Search Console (Domain property, DNS TXT record in Cloudflare; keep that record) and `/sitemap.xml` submitted.
 - [ ] **Check the live site:** run Lighthouse on the production URL and share a page on LinkedIn or Slack to check its preview image.
 
 ## Code quality
