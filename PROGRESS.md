@@ -39,7 +39,7 @@ The launch checklist from the README. These need your accounts or content:
   - [x] About page: photo and bio (golf, hockey, concerts); the "how I work" and "learning" sections removed
   - [x] `/uses` page removed entirely
 - [x] **Search:** `evanreynolds.dev` verified in Google Search Console as a Domain property (DNS TXT record in Cloudflare; keep it), and `sitemap.xml` submitted (2026-10-11).
-- [ ] **Check the live site:** Lighthouse run on `evanreynolds.dev` (2026-10-11, see the log). Remaining: turn off Cloudflare's **Email Address Obfuscation** (Security → Settings), re-run Lighthouse, and share a page on LinkedIn or Slack to check its preview image.
+- [ ] **Check the live site:** Lighthouse on `evanreynolds.dev` done (2026-10-11): performance 97–99, accessibility, best practices and SEO 100 on all 9 pages. Remaining: share a page on LinkedIn or Slack to check its preview image.
 
 Later (from the plan): a blog once three posts are ready, and a `/now` page.
 
@@ -74,6 +74,8 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Lighthouse (mobile) on the live domain: accessibility, best practices and SEO 100 on all 9 pages; performance 97–100 except `/projects` at 85. Two findings:
   - `/projects` had a layout shift (CLS 0.28): the filter bar was revealed by script after load, pushing the grid down. Fixed by rendering it visible from the start (a `<noscript>` style hides it without JavaScript) and server-rendering the "3 projects" count.
   - LCP was 2.0–2.4 s on most pages, mainly because of Cloudflare's **Email Address Obfuscation**: on the custom domain it rewrites email addresses and adds a render-blocking `email-decode.min.js` (up to ~0.5 s). It doesn't actually hide the address, which still appears in links and JSON-LD. Turn it off in the dashboard.
+- Shipped the `/projects` fix and these notes in PR [#19](https://github.com/evanreynolds1116/PersonalWebsite/pull/19), merged as `8ad1c41`; branch deleted. On its preview, `/projects` measured CLS 0.000 and performance 99, up from 85.
+- Turned off Cloudflare's Email Address Obfuscation and re-ran Lighthouse (mobile) on the live site: performance 97–99 on every page (`/projects` 98, CLS 0 everywhere), accessibility, best practices and SEO 100, LCP 1.8–2.3 s. The only render-blocking resource left is the site's own stylesheet. Optional next step if LCP needs to drop under 2 s everywhere: inline the CSS (`build.inlineStylesheets: 'always'`).
 
 ### 2026-10-10
 
