@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Live at https://evanreynolds.dev.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. `evanreynolds.dev` is indexable with a valid certificate; `www` redirects to it; the `pages.dev` address stays `noindex`. Cookie-free Web Analytics is on. Real content: the full resume, hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, three project case studies, the services page, and the About page with photo and bio. No `[bracketed]` placeholders remain on any page.
+**Live at https://evanreynolds.dev.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. `evanreynolds.dev` is indexable with a valid certificate; `www` redirects to it; the `pages.dev` address stays `noindex`. Cookie-free Web Analytics is on, and the contact form sends through Formspree. Real content: the full resume, hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, three project case studies, the services page, and the About page with photo and bio. No `[bracketed]` placeholders remain on any page.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -66,7 +66,8 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Went live on `evanreynolds.dev`: attached the domain to the Pages project, added a `www` → root redirect rule, and checked the certificate, the pages, the PDF, share images, security headers and that `x-robots-tag: noindex` applies only to `pages.dev`.
 - Turned on Cloudflare Web Analytics with automatic setup. Checked in a real browser: the beacon loads, visits are reported to `/cdn-cgi/rum` (204), and the CSP blocks nothing.
 - Logged the launch in this file and the README (PR [#16](https://github.com/evanreynolds1116/PersonalWebsite/pull/16), merged as `a292756`).
-- Connected the contact form to Formspree (`https://formspree.io/f/mnpjvlgj`).
+- Connected the contact form to Formspree (`https://formspree.io/f/mnpjvlgj`) in PR [#17](https://github.com/evanreynolds1116/PersonalWebsite/pull/17), merged as `dee0b82`. Checked on the preview that the form posts to the endpoint, the CSP allows Formspree (`connect-src` and `form-action`), the `_gotcha` honeypot is present and all three subject lines are set. A test sent before the merge failed as expected, because the live site still had the placeholder endpoint.
+- Deleted the `docs/domain-and-analytics` and `content/formspree` branches after their PRs merged; `main` is the only branch.
 
 ### 2026-10-10
 
