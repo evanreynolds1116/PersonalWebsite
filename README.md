@@ -37,6 +37,7 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
 ├── config/
 │   └── build-info.mjs        Reads branch + commit for the footer at build time (runs in Node)
 ├── docs/                     Planning docs and approved mockups (not part of the build)
+├── linkedin-cover/           LinkedIn banner (3168×792 PNG) and the HTML it was rendered from (not part of the build)
 ├── public/                   Static files copied as-is: favicon, _headers (Cloudflare response headers)
 ├── scripts/
 │   └── postbuild.mjs         Share images, resume PDF and output checks (runs after astro build)
