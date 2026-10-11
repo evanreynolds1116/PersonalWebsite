@@ -95,16 +95,6 @@ export async function getPages(): Promise<PageEntry[]> {
       },
     },
     {
-      path: '/uses',
-      indexed: true,
-      og: {
-        dir: '~/uses',
-        command: 'ls -la',
-        title: 'Uses',
-        subtitle: 'The editor, terminal, hardware and tools I use every day.',
-      },
-    },
-    {
       path: '/404',
       indexed: false,
       og: {

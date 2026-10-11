@@ -63,8 +63,7 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
     │   └── projects/*.mdx      One file per case study (filename = URL slug)
     ├── data/
     │   ├── resume.json         JSON Resume: single source for /resume and the home timeline
-    │   ├── services.ts         Offerings, process, pricing, testimonials
-    │   └── uses.ts             The /uses list
+    │   └── services.ts         Offerings, process, pricing, testimonials
     ├── layouts/
     │   └── BaseLayout.astro    <head>, theme bootstrap, fonts, skip link, nav, footer
     ├── lib/
@@ -81,7 +80,6 @@ The first build downloads the fonts (see [Fonts](#fonts)), so it needs network a
     │   ├── services.astro      Offerings, process, testimonials
     │   ├── about.astro
     │   ├── contact.astro       Contact form (Formspree)
-    │   ├── uses.astro
     │   ├── 404.astro           "zsh: command not found" page
     │   ├── og-src/[key].astro  Share-image templates (screenshotted, then removed)
     │   ├── sitemap.xml.ts
@@ -183,7 +181,7 @@ Until the repository variable below is set, the workflow builds and checks but s
 
 These need your accounts or your content, so they're manual:
 
-- [ ] **Domain:** buy it, add it under the Pages project → Custom domains (Cloudflare sets up DNS and HTTPS), then set `SITE_URL` in `astro.config.mjs` and `handle` in `src/config/site.ts`.
+- [ ] **Domain:** `evanreynolds.dev` is bought (Cloudflare Registrar) and set as `SITE_URL` in `astro.config.mjs`. Remaining: attach it under the Pages project → Custom domains (Cloudflare sets up DNS and HTTPS).
 - [ ] **Analytics:** Cloudflare dashboard → Web Analytics → add the domain, then paste the token into `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create a Formspree form for your email and paste its endpoint into `formEndpoint`. Send yourself a test of each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder (see [Editing content](#editing-content)), add screenshots and a photo, and only publish testimonials you have permission for.
@@ -208,7 +206,6 @@ Everything in `[brackets]` is a placeholder. Where each piece lives:
 | Experience, education, certificates, skills                        | [`src/data/resume.json`](src/data/resume.json), in [JSON Resume](https://jsonresume.org/schema) format |
 | Handle, availability badge, whoami card, stack strip, booking link | [`src/config/site.ts`](src/config/site.ts)                                                             |
 | Offerings, process, pricing, testimonials                          | [`src/data/services.ts`](src/data/services.ts) (set `showPricing = false` to hide prices)              |
-| The /uses list                                                     | [`src/data/uses.ts`](src/data/uses.ts)                                                                 |
 | About page copy                                                    | The lists at the top of [`src/pages/about.astro`](src/pages/about.astro)                               |
 | Projects                                                           | [`src/content/projects/`](src/content/projects/)                                                       |
 | Production URL                                                     | `site` in `astro.config.mjs`                                                                           |

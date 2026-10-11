@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: the full resume (title "Software Engineer", summary, three roles with bullets, education, skills), the hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, and three project case studies (Red Tide Tattoo Co., Draft Day and Music Junkie), and the services page (three offerings, process, prices and testimonials hidden). Still placeholder text in `[brackets]`: the about page, `/uses`, and the photo.
+**Deployed to https://evanreynolds-site.pages.dev; `evanreynolds.dev` bought, waiting to be attached.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. `SITE_URL` is `https://evanreynolds.dev`; once the domain is attached to the Pages project it serves the site and is indexable, while the `pages.dev` address stays `noindex`. Real content: the full resume, hero line, whoami card, availability badge, stack strip, the `~/EvanReynolds` handle, three project case studies, the services page, and the About page with photo and bio. No `[bracketed]` placeholders remain on any page.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -18,7 +18,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 The launch checklist from the README. These need your accounts or content:
 
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
-- [ ] **Domain:** buy it (recommended: `evanreynolds.dev`, unregistered as of 2026-10-10; `evanreynolds.com` is taken, `evanmaxreynolds.com` is a fallback), ideally through Cloudflare Registrar, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` (the `handle` is already set to `EvanReynolds`).
+- [ ] **Domain:** `evanreynolds.dev` bought on Cloudflare Registrar (2026-10-11) and set as `SITE_URL`. Remaining: Workers & Pages → `evanreynolds-site` → Custom domains → add `evanreynolds.dev` (and optionally `www.evanreynolds.dev`).
 - [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
@@ -36,7 +36,8 @@ The launch checklist from the README. These need your accounts or content:
   - [ ] Confirm "remote-friendly" in the whoami card (not from the resume)
   - [x] Services: three offerings, process and timelines (prices hidden until decided; testimonials hidden until you have real, permitted quotes)
   - [ ] Review the services timelines and process promises (estimates)
-  - [ ] About, `/uses`, photo
+  - [x] About page: photo and bio (golf, hockey, concerts); the "how I work" and "learning" sections removed
+  - [x] `/uses` page removed entirely
 - [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
 - [ ] **Check the live site:** Lighthouse on the production URL; share a page to check its preview image.
 
@@ -56,6 +57,11 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Made the hero line more general: "Software engineer who builds reliable data pipelines, APIs and full-stack web apps, from enterprise systems to small-business sites." Removed the Badge Pay sentence from the hero (it stays on the resume and home timeline).
 - Filled in the services page: three offerings (websites for small businesses, data pipelines & automation, web apps & MVPs) with what's included and typical timelines, the discovery, build and handoff process, and a new intro line. Prices hidden (`showPricing = false`); testimonials hidden until there are real, permitted quotes; "services & pricing" links renamed "services".
 - The hero and services changes, with this file's update, shipped in PR [#12](https://github.com/evanreynolds1116/PersonalWebsite/pull/12), merged as `3941c14`; branch deleted. `main` is the only branch.
+- Logged PR #12 in this file (PR [#13](https://github.com/evanreynolds1116/PersonalWebsite/pull/13), merged as `1c0d2f4`).
+- About page: added the photo (AVIF/WebP, cropped 4:5 on the face, with alt text) and a ~140-word bio from the resume, ending with golf, hockey and concerts. Removed the "how I work" and "learning" sections and the `/uses` link; no mention of AI coding agents, by request (PR [#14](https://github.com/evanreynolds1116/PersonalWebsite/pull/14), merged as `887c5dd`).
+- Filled in the last placeholder, the `/projects` intro: "A few things I've built, from a small-business website to real-time and social web apps."
+- Removed the `/uses` page entirely: the page, its data file, its sitemap and share-image entry, its Cmd+K palette entry and its README mentions.
+- Bought `evanreynolds.dev` on Cloudflare Registrar. Set `SITE_URL` in `astro.config.mjs` and `url` in `resume.json` to `https://evanreynolds.dev`, so canonical URLs, the sitemap, `robots.txt`, share images and JSON-LD all use it.
 
 ### 2026-10-10
 
