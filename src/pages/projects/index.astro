@@ -25,8 +25,18 @@ const tags = allTags(projects);
       lead="A few things I've built, from a small-business website to real-time and social web apps."
     />
 
-    <!-- Filter bar: revealed by the script, so without JS every project simply shows. -->
-    <div id="project-filter" hidden class="mb-8 flex flex-col gap-3">
+    <!--
+      Filter bar: rendered visible so it doesn't push the grid down after load (layout shift);
+      the noscript style hides it without JS, where every project simply shows.
+    -->
+    <noscript>
+      <style>
+        #project-filter {
+          display: none;
+        }
+      </style>
+    </noscript>
+    <div id="project-filter" class="mb-8 flex flex-col gap-3" hidden={projects.length < 2}>
       <p id="filter-label" class="font-mono text-sm text-muted">
         filter:
       </p>
@@ -46,7 +56,9 @@ const tags = allTags(projects);
           </button>
         ))}
       </div>
-      <p id="filter-status" role="status" class="font-mono text-[13px] text-muted"></p>
+      <p id="filter-status" role="status" class="font-mono text-[13px] text-muted">
+        {`${projects.length} ${projects.length === 1 ? 'project' : 'projects'}`}
+      </p>
     </div>
 
     <div id="project-grid" class="grid gap-6 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
@@ -101,7 +113,6 @@ const tags = allTags(projects);
   }
 
   if (filter && cards.length > 1) {
-    filter.hidden = false;
     for (const button of buttons) {
       button.addEventListener('click', () => apply(button.dataset.filter ?? 'all', true));
     }

@@ -20,7 +20,7 @@ The launch checklist from the README. These need your accounts or content:
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
 - [x] **Domain:** `evanreynolds.dev` bought on Cloudflare Registrar and attached to the Pages project (2026-10-11): HTTPS certificate from Google Trust Services, `www` redirects to the root with the query string preserved.
 - [x] **Analytics:** Cloudflare Web Analytics with automatic setup; Cloudflare injects the beacon at the edge, so `cloudflareAnalyticsToken` stays unset (setting it too would double-count).
-- [ ] **Contact form:** Formspree endpoint `https://formspree.io/f/mnpjvlgj` set (2026-10-11). Remaining: send one test message per inquiry type from https://evanreynolds.dev/contact and check subject lines, Reply-To and the success message.
+- [x] **Contact form:** Formspree endpoint `https://formspree.io/f/mnpjvlgj`; test messages for each inquiry type arrived (2026-10-11).
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
   - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles with titles)
   - [x] `resume.json`: summary, role summaries and bullets, company links, education, skills (from the PDF resume; no certificates)
@@ -38,8 +38,8 @@ The launch checklist from the README. These need your accounts or content:
   - [ ] Review the services timelines and process promises (estimates)
   - [x] About page: photo and bio (golf, hockey, concerts); the "how I work" and "learning" sections removed
   - [x] `/uses` page removed entirely
-- [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
-- [ ] **Check the live site:** Lighthouse on the production URL; share a page to check its preview image.
+- [x] **Search:** `evanreynolds.dev` verified in Google Search Console as a Domain property (DNS TXT record in Cloudflare; keep it), and `sitemap.xml` submitted (2026-10-11).
+- [ ] **Check the live site:** Lighthouse run on `evanreynolds.dev` (2026-10-11, see the log). Remaining: turn off Cloudflare's **Email Address Obfuscation** (Security → Settings), re-run Lighthouse, and share a page on LinkedIn or Slack to check its preview image.
 
 Later (from the plan): a blog once three posts are ready, and a `/now` page.
 
@@ -68,6 +68,12 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Logged the launch in this file and the README (PR [#16](https://github.com/evanreynolds1116/PersonalWebsite/pull/16), merged as `a292756`).
 - Connected the contact form to Formspree (`https://formspree.io/f/mnpjvlgj`) in PR [#17](https://github.com/evanreynolds1116/PersonalWebsite/pull/17), merged as `dee0b82`. Checked on the preview that the form posts to the endpoint, the CSP allows Formspree (`connect-src` and `form-action`), the `_gotcha` honeypot is present and all three subject lines are set. A test sent before the merge failed as expected, because the live site still had the placeholder endpoint.
 - Deleted the `docs/domain-and-analytics` and `content/formspree` branches after their PRs merged; `main` is the only branch.
+- Logged PR #17 in this file (PR [#18](https://github.com/evanreynolds1116/PersonalWebsite/pull/18), merged as `0469c67`; branch deleted).
+- Tested the live contact form: messages for each inquiry type (Job, Freelance, Other) arrived. The contact form is done.
+- Google Search Console: the automatic "Domain name provider" (Cloudflare) verification didn't add the TXT record, so it was added by hand in Cloudflare DNS (`@`, TXT `google-site-verification=…`). Once Google's resolver could see it, the Domain property verified and `sitemap.xml` was submitted successfully.
+- Lighthouse (mobile) on the live domain: accessibility, best practices and SEO 100 on all 9 pages; performance 97–100 except `/projects` at 85. Two findings:
+  - `/projects` had a layout shift (CLS 0.28): the filter bar was revealed by script after load, pushing the grid down. Fixed by rendering it visible from the start (a `<noscript>` style hides it without JavaScript) and server-rendering the "3 projects" count.
+  - LCP was 2.0–2.4 s on most pages, mainly because of Cloudflare's **Email Address Obfuscation**: on the custom domain it rewrites email addresses and adds a render-blocking `email-decode.min.js` (up to ~0.5 s). It doesn't actually hide the address, which still appears in links and JSON-LD. Turn it off in the dashboard.
 
 ### 2026-10-10
 
