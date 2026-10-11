@@ -20,7 +20,7 @@ The launch checklist from the README. These need your accounts or content:
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
 - [x] **Domain:** `evanreynolds.dev` bought on Cloudflare Registrar and attached to the Pages project (2026-10-11): HTTPS certificate from Google Trust Services, `www` redirects to the root with the query string preserved.
 - [x] **Analytics:** Cloudflare Web Analytics with automatic setup; Cloudflare injects the beacon at the edge, so `cloudflareAnalyticsToken` stays unset (setting it too would double-count).
-- [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
+- [ ] **Contact form:** Formspree endpoint `https://formspree.io/f/mnpjvlgj` set (2026-10-11). Remaining: send one test message per inquiry type from https://evanreynolds.dev/contact and check subject lines, Reply-To and the success message.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
   - [x] `resume.json` basics and work history (name, title, email, location, profiles, three roles with titles)
   - [x] `resume.json`: summary, role summaries and bullets, company links, education, skills (from the PDF resume; no certificates)
@@ -65,6 +65,8 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
 - Shipped the `/uses` removal, the domain change and the `/projects` intro in PR [#15](https://github.com/evanreynolds1116/PersonalWebsite/pull/15), merged as `6d66bfa`.
 - Went live on `evanreynolds.dev`: attached the domain to the Pages project, added a `www` → root redirect rule, and checked the certificate, the pages, the PDF, share images, security headers and that `x-robots-tag: noindex` applies only to `pages.dev`.
 - Turned on Cloudflare Web Analytics with automatic setup. Checked in a real browser: the beacon loads, visits are reported to `/cdn-cgi/rum` (204), and the CSP blocks nothing.
+- Logged the launch in this file and the README (PR [#16](https://github.com/evanreynolds1116/PersonalWebsite/pull/16), merged as `a292756`).
+- Connected the contact form to Formspree (`https://formspree.io/f/mnpjvlgj`).
 
 ### 2026-10-10
 
