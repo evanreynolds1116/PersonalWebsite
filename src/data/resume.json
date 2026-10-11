@@ -2,10 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Evan Reynolds",
-    "label": "Senior Software Engineer",
+    "label": "Software Engineer",
     "email": "evanreynolds95@proton.me",
     "url": "https://yourname.dev",
-    "summary": "[Two or three sentences: what you build, the kind of teams you do your best work in, and the result you're known for.]",
+    "summary": "Software engineer with 5 years building the data infrastructure behind enterprise payroll. Currently the sole engineer running HCA Healthcare's Badge Pay platform, a badge-based payment system used across 250+ facilities that processes over $5M in payroll deductions each month. Strong in Python, SQL and ETL pipeline development, with earlier experience building backend APIs and a recent focus on modernizing legacy COBOL systems. Now focused on agentic engineering: shipping full-stack systems by directing AI coding agents with specs, guardrails and automated verification.",
     "location": {
       "city": "Nashville",
       "region": "TN",
@@ -28,52 +28,110 @@
     {
       "name": "HCA Healthcare",
       "position": "Application Engineer",
-      "url": "https://example.com",
-      "startDate": "2024",
-      "summary": "[Biggest impact in one line, with a number.]",
+      "url": "https://www.hcahealthcare.com",
+      "startDate": "2024-12",
+      "summary": "Sole engineer running Badge Pay: 250+ facilities, ~146,000 employees a month and over $5M in monthly payroll deductions.",
       "highlights": [
-        "[Impact bullet with a number: what you shipped, and what it changed.]",
-        "[Impact bullet with a number.]",
-        "[Impact bullet with a number.]"
+        "Sole engineer owning HCA's Badge Pay program end to end: a badge-based payment system for cafeterias, gift shops and retail across 250+ facilities, used by ~146,000 employees monthly and generating over $5M in monthly payroll deductions.",
+        "Designed and maintained Python + Airflow ETL pipelines that process financial transactions and employee data, integrating vendor systems with internal payroll infrastructure.",
+        "Built and maintained automated SFTP/FTP workflows and SQL transformations that ensure accurate, timely payroll deductions from badge transactions.",
+        "Built Power BI dashboards for Lawson payroll badge-pay processing, monitoring intake, load outcomes and deduction reconciliation across HR entities.",
+        "Used GitHub Copilot to document and modernize legacy custom COBOL programs supporting Infor Lawson Payroll, improving maintainability and delivering overdue process improvements to outdated workflows.",
+        "Worked within CI/CD pipelines in Azure DevOps integrated with GitHub, using pull requests and automated builds to deliver payroll application changes to production."
       ]
     },
     {
       "name": "Momentum Technology",
       "position": "Backend Software Engineer",
-      "startDate": "2023",
-      "endDate": "2024",
-      "summary": "[Biggest impact in one line, with a number.]",
-      "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
+      "startDate": "2023-06",
+      "endDate": "2024-06",
+      "summary": "Integrated Sift AI fraud detection into the backend, driving a 20% revenue increase in the first month.",
+      "highlights": [
+        "Built and shipped RESTful APIs across development, QA and production environments, validating functionality and performance with Postman.",
+        "Led development of in-app multimedia messaging and integrated Hive AI Visual Moderation for automated content moderation.",
+        "Integrated Sift AI into the backend to reduce fraudulent transactions and grant verified-safe users access to expanded paid features, driving a 20% revenue increase in the first month.",
+        "Designed and optimized SQL/PostgreSQL databases for data integrity and performance at scale.",
+        "Queried and analyzed data in BigQuery to support development and troubleshooting.",
+        "Built an automated monitoring and alerting system on Google Cloud Platform using cloud functions, logging and alerting policies to safeguard uptime.",
+        "Containerized and deployed services with Docker and Kubernetes, applying DevOps practices for reliable releases.",
+        "Authored API documentation with Sphinx, giving the team a clear reference for development and integration."
+      ]
     },
     {
       "name": "Accenture",
       "position": "Associate Software Engineer",
-      "startDate": "2021",
-      "endDate": "2023",
-      "summary": "[Biggest impact in one line, with a number.]",
-      "highlights": ["[Impact bullet with a number.]", "[Impact bullet with a number.]"]
+      "url": "https://www.accenture.com",
+      "startDate": "2021-04",
+      "endDate": "2023-06",
+      "summary": "Built MuleSoft ETL APIs and owned data validation and reconciliation for an automated Salesforce data conversion.",
+      "highlights": [
+        "Built MuleSoft APIs to extract, transform and load data from source systems into a conversion PostgreSQL database.",
+        "Developed MuleSoft and SQL transformations to restructure source data for compatibility with the Salesforce target system.",
+        "Owned data validation, reconciliation, exception handling and scheduling for the automated conversion process.",
+        "Remediated Salesforce orgs to achieve Salesforce Operational Controls compliance.",
+        "Classified objects and fields to meet client privacy requirements and compiled Risk Inspector Tool outputs via SOQL queries to surface compliance flags.",
+        "Migrated code through the Copado DevOps pipeline and managed the Gerrit review process, analyzing the existing codebase to define use cases and build test cycles.",
+        "Led quality assurance across Accenture and third-party vendor development: test execution, defect management and system integration testing."
+      ]
     }
   ],
   "education": [
     {
-      "institution": "[University]",
-      "area": "[Computer Science]",
-      "studyType": "[B.S.]",
-      "startDate": "[20XX]",
-      "endDate": "[20XX]"
-    }
-  ],
-  "certificates": [
+      "institution": "Nashville Software School",
+      "area": "Full Stack Software Development",
+      "startDate": "2020-03",
+      "endDate": "2020-09"
+    },
     {
-      "name": "[Certification name]",
-      "issuer": "[Issuer]",
-      "date": "[20XX]"
+      "institution": "Irvine Valley College",
+      "area": "Business Sciences",
+      "startDate": "2014-08",
+      "endDate": "2016-05"
     }
   ],
+  "certificates": [],
   "skills": [
-    { "name": "Languages", "keywords": ["typescript", "go", "python", "sql"] },
-    { "name": "Frontend", "keywords": ["react", "astro", "tailwind"] },
-    { "name": "Backend", "keywords": ["node", "postgres", "redis", "grpc"] },
-    { "name": "Cloud & ops", "keywords": ["aws", "docker", "terraform", "github-actions"] }
+    {
+      "name": "AI / agentic",
+      "keywords": ["claude-code", "github-copilot", "prompt-engineering"]
+    },
+    { "name": "Languages", "keywords": ["python", "sql", "javascript", "typescript"] },
+    {
+      "name": "Data & ETL",
+      "keywords": [
+        "airflow",
+        "etl-pipelines",
+        "power-bi",
+        "db2",
+        "postgres",
+        "bigquery",
+        "prisma",
+        "drizzle",
+        "power-query"
+      ]
+    },
+    {
+      "name": "Backend",
+      "keywords": [
+        "django",
+        "fastapi",
+        "flask",
+        "node",
+        "fastify",
+        "socket.io",
+        "rest-apis",
+        "mulesoft",
+        "salesforce"
+      ]
+    },
+    {
+      "name": "Testing",
+      "keywords": ["unit-testing", "integration-testing", "vitest", "playwright"]
+    },
+    {
+      "name": "Cloud & DevOps",
+      "keywords": ["gcp", "azure", "azure-devops", "ci-cd", "docker", "kubernetes", "copado"]
+    },
+    { "name": "Frontend", "keywords": ["react", "nextjs", "vite", "tailwind"] }
   ]
 }

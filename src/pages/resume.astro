@@ -101,7 +101,9 @@ const pdfName = `${basics.name
                   {dateRange(item.startDate, item.endDate)}
                 </p>
                 <div>
-                  <h3 class="font-semibold">{`${item.studyType} ${item.area}`}</h3>
+                  <h3 class="font-semibold">
+                    {[item.studyType, item.area].filter(Boolean).join(' ')}
+                  </h3>
                   <p class="text-base text-muted">{item.institution}</p>
                 </div>
               </li>

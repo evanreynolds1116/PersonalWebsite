@@ -12,7 +12,8 @@ export const site = {
   /** Shown as the `~/handle` logo; match your GitHub/LinkedIn handle. */
   handle: 'EvanReynolds',
   city: resume.basics.location.city,
-  description: '[Role] who builds [what you build] for [who you help].',
+  description:
+    'Software engineer who builds the data pipelines behind enterprise payroll, and ships full-stack apps by directing AI coding agents.',
   locale: 'en',
   /** The amber badge in the hero. */
   availability: 'Open to senior roles · Taking select freelance work',
@@ -38,7 +39,7 @@ export const site = {
 /** The `$ whoami` card in the home hero. */
 export const whoami = {
   role: site.role,
-  focus: '[Backend · APIs · Cloud]',
+  focus: 'Data pipelines · APIs · AI agents',
   experience: '5 years',
   based: `${site.city} · remote-friendly`,
   status: 'available [month]',
@@ -46,13 +47,14 @@ export const whoami = {
 
 /** The `stack:` strip on the home page, as --flags. */
 export const stack: readonly string[] = [
+  'python',
+  'sql',
   'typescript',
-  'react',
-  'node',
-  'go',
+  'airflow',
   'postgres',
-  'aws',
+  'react',
   'docker',
+  'claude-code',
 ];
 
 export interface NavLink {
