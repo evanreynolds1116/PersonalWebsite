@@ -6,9 +6,9 @@ import { readBuildInfo } from './config/build-info.mjs';
 
 /**
  * The production URL: canonical links, sitemap, share images and JSON-LD all use it.
- * Replace the placeholder once the domain is live.
+ * The live domain, evanreynolds.dev (Cloudflare Pages custom domain).
  */
-const SITE_URL = 'https://yourname.dev';
+const SITE_URL = 'https://evanreynolds.dev';
 
 // https://astro.build/config
 export default defineConfig({

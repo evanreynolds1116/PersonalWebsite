@@ -4,7 +4,7 @@
     "name": "Evan Reynolds",
     "label": "Software Engineer",
     "email": "evanreynolds95@proton.me",
-    "url": "https://yourname.dev",
+    "url": "https://evanreynolds.dev",
     "summary": "Software engineer with 5 years building the data infrastructure behind enterprise payroll. Currently the sole engineer running HCA Healthcare's Badge Pay platform, a badge-based payment system used across 250+ facilities that processes over $5M in payroll deductions each month. Strong in Python, SQL and ETL pipeline development, with earlier experience building backend APIs and a recent focus on modernizing legacy COBOL systems. Now focused on agentic engineering: shipping full-stack systems by directing AI coding agents with specs, guardrails and automated verification.",
     "location": {
       "city": "Nashville",
