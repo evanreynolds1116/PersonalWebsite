@@ -39,7 +39,7 @@ The launch checklist from the README. These need your accounts or content:
   - [x] About page: photo and bio (golf, hockey, concerts); the "how I work" and "learning" sections removed
   - [x] `/uses` page removed entirely
 - [x] **Search:** `evanreynolds.dev` verified in Google Search Console as a Domain property (DNS TXT record in Cloudflare; keep it), and `sitemap.xml` submitted (2026-10-11).
-- [ ] **Check the live site:** Lighthouse on `evanreynolds.dev` done (2026-10-11): performance 97–99, accessibility, best practices and SEO 100 on all 9 pages. Remaining: share a page on LinkedIn or Slack to check its preview image.
+- [ ] **Check the live site:** Lighthouse done (2026-10-11): performance 97–100, accessibility, best practices and SEO 100, LCP under 2 s on every page (within normal run-to-run variation). Remaining: share a page on LinkedIn or Slack to check its preview image.
 
 Later (from the plan): a blog once three posts are ready, and a `/now` page.
 
@@ -76,6 +76,11 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
   - LCP was 2.0–2.4 s on most pages, mainly because of Cloudflare's **Email Address Obfuscation**: on the custom domain it rewrites email addresses and adds a render-blocking `email-decode.min.js` (up to ~0.5 s). It doesn't actually hide the address, which still appears in links and JSON-LD. Turn it off in the dashboard.
 - Shipped the `/projects` fix and these notes in PR [#19](https://github.com/evanreynolds1116/PersonalWebsite/pull/19), merged as `8ad1c41`; branch deleted. On its preview, `/projects` measured CLS 0.000 and performance 99, up from 85.
 - Turned off Cloudflare's Email Address Obfuscation and re-ran Lighthouse (mobile) on the live site: performance 97–99 on every page (`/projects` 98, CLS 0 everywhere), accessibility, best practices and SEO 100, LCP 1.8–2.3 s. The only render-blocking resource left is the site's own stylesheet. Optional next step if LCP needs to drop under 2 s everywhere: inline the CSS (`build.inlineStylesheets: 'always'`).
+- Logged that in this file (PR [#20](https://github.com/evanreynolds1116/PersonalWebsite/pull/20), merged as `ce5f252`).
+- Inlined the stylesheet (`build.inlineStylesheets: 'always'`, ~6 KB gzipped per page) to remove the last render-blocking request (PR [#21](https://github.com/evanreynolds1116/PersonalWebsite/pull/21), merged as `ef45ad1`). On the preview: no CSP violations, styles and fonts correct on all 9 pages, performance 99 everywhere, LCP 1.80–2.16 s.
+- Gave the LCP images priority: the first `/projects` card's screenshot now loads eagerly with `fetchpriority="high"` (the other cards stay lazy), and the About photo gets `fetchpriority="high"` (PR [#22](https://github.com/evanreynolds1116/PersonalWebsite/pull/22), merged as `96e7fb6`). On the preview, LCP went from 2.03 to 1.65–1.91 s on `/projects` and from 2.16 to 1.95–1.96 s on `/about`. Every page now measures under 2 s, apart from normal run-to-run variation (the home page measured 1.39 s and 2.03 s back to back).
+- Made a LinkedIn cover (3168×792, twice LinkedIn's 1584×396) in the site's terminal style, with the bottom-left left clear for the profile photo. Added it to the repo with its HTML source and fonts in `linkedin-cover/` (PR [#23](https://github.com/evanreynolds1116/PersonalWebsite/pull/23), merged as `52edca5`). Upload it on LinkedIn via the banner's edit icon.
+- Deleted each branch after its PR merged; `main` is the only branch.
 
 ### 2026-10-10
 
