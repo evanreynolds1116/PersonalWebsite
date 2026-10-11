@@ -43,7 +43,8 @@ const resumeSchema = z.object({
       z.object({
         institution: z.string(),
         area: z.string(),
-        studyType: z.string(),
+        /** Degree or credential, e.g. "B.S."; omit for programs without one. */
+        studyType: z.string().optional(),
         startDate: date.optional(),
         endDate: date.optional(),
       }),
@@ -75,6 +76,7 @@ export function year(value: string): string {
 /** `2021–2024`, or `2021–now` for a role without an end date. */
 export function dateRange(start: string | undefined, end: string | undefined): string {
   if (!start) return end ? year(end) : '';
+  if (end && year(start) === year(end)) return year(start); // e.g. a Mar–Sep 2020 program
   return `${year(start)}–${end ? year(end) : 'now'}`;
 }
 

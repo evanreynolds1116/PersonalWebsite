@@ -63,7 +63,8 @@ const pdfName = `${basics.name
                   <span class="text-muted"> @ </span>
                   {role.url ? <a href={role.url}>{role.name}</a> : role.name}
                 </h3>
-                <p class="text-base text-muted">{role.summary}</p>
+                {/* The one-line summary is for the home timeline; here it would repeat the bullets. */}
+                {role.highlights.length === 0 && <p class="text-base text-muted">{role.summary}</p>}
                 {role.highlights.length > 0 && (
                   <ul class="mt-1 flex list-disc flex-col gap-1.5 pl-5 text-base marker:text-muted">
                     {role.highlights.map((highlight) => (
@@ -101,7 +102,9 @@ const pdfName = `${basics.name
                   {dateRange(item.startDate, item.endDate)}
                 </p>
                 <div>
-                  <h3 class="font-semibold">{`${item.studyType} ${item.area}`}</h3>
+                  <h3 class="font-semibold">
+                    {[item.studyType, item.area].filter(Boolean).join(' ')}
+                  </h3>
                   <p class="text-base text-muted">{item.institution}</p>
                 </div>
               </li>
