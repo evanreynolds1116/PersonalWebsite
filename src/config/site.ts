@@ -16,7 +16,7 @@ export const site = {
     'Software engineer who builds the data pipelines behind enterprise payroll, and ships full-stack apps by directing AI coding agents.',
   locale: 'en',
   /** The amber badge in the hero. */
-  availability: 'Open to senior roles · Taking select freelance work',
+  availability: 'Open to software/data/analytics engineering roles · Taking select freelance work',
   /** Shown under the contact headings. */
   replyTime: 'I usually reply within a day.',
   github: profileUrl('github'),
@@ -39,10 +39,10 @@ export const site = {
 /** The `$ whoami` card in the home hero. */
 export const whoami = {
   role: site.role,
-  focus: 'Data pipelines · APIs · AI agents',
+  focus: 'Full-stack development · APIs · AI agents',
   experience: '5 years',
   based: `${site.city} · remote-friendly`,
-  status: 'available [month]',
+  status: 'available now',
 } as const;
 
 /** The `stack:` strip on the home page, as --flags. */
