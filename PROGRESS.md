@@ -4,7 +4,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 
 ## Status
 
-**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, the `~/EvanReynolds` handle, and two project case studies (Red Tide Tattoo Co. and Draft Day). The rest is still placeholder text in `[brackets]`.
+**Deployed to https://evanreynolds-site.pages.dev; no custom domain yet.** Every page is built, CI passes on `main`, pushes to `main` deploy automatically, and Lighthouse (mobile) scores 100 in every category. The `pages.dev` address is `noindex` until the domain is connected. Real content so far: name, contact details and work history in `resume.json`, the `~/EvanReynolds` handle, and three project case studies (Red Tide Tattoo Co., Draft Day and Music Junkie), so no placeholder projects remain. The rest is still placeholder text in `[brackets]`.
 
 | Phase                 | Status                            | Commit    | Date       |
 | --------------------- | --------------------------------- | --------- | ---------- |
@@ -18,7 +18,7 @@ A dated log of the build, following the phases in [`docs/website-plan.md`](docs/
 The launch checklist from the README. These need your accounts or content:
 
 - [x] **Cloudflare:** Pages project `evanreynolds-site`, API token, and GitHub secrets/variable set; deploys run on every push to `main`.
-- [ ] **Domain:** buy it, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` (the `handle` is already set to `EvanReynolds`).
+- [ ] **Domain:** buy it (recommended: `evanreynolds.dev`, unregistered as of 2026-10-10; `evanreynolds.com` is taken, `evanmaxreynolds.com` is a fallback), ideally through Cloudflare Registrar, add it to the Pages project, then set `SITE_URL` in `astro.config.mjs` (the `handle` is already set to `EvanReynolds`).
 - [ ] **Analytics:** add the Cloudflare Web Analytics token to `cloudflareAnalyticsToken` in `src/config/site.ts`.
 - [ ] **Contact form:** create the Formspree form and set `formEndpoint` in `src/config/site.ts`; test each inquiry type.
 - [ ] **Content:** replace every `[bracketed]` placeholder, add project screenshots and a photo, and publish only testimonials you have permission for. Progress:
@@ -28,7 +28,8 @@ The launch checklist from the README. These need your accounts or content:
   - [ ] Red Tide: add the owner's view of the old site, early results, and what you'd do differently (removed as placeholders before publishing)
   - [x] Project 2: Draft Day case study
   - [ ] Draft Day: decide on the real player headshots in the screenshots, and whether to mention AI-assisted development (the public repo has a `CLAUDE.md`)
-  - [ ] Project 3 (still `[Project Three]`)
+  - [x] Project 3: Music Junkie case study
+  - [ ] Music Junkie: confirm you're happy publishing your real concert history in the screenshots, and whether to mention AI-assisted development (the repo has `CLAUDE.md` and `AGENTS.md`)
   - [x] Handle (`EvanReynolds`) and years of experience in the whoami card
   - [ ] Hero line, rest of the whoami card (focus, status), stack strip, services, about, `/uses`, photo
 - [ ] **Search:** submit `/sitemap.xml` in Google Search Console.
@@ -51,6 +52,13 @@ Later (from the plan): a blog once three posts are ready, and a `/now` page.
   - Case study written from the repo's README, commits and test suite: the league's format, pure rules engine, authoritative server, bid secrecy, restart safety, four key decisions.
   - Results counted from the repo: 350 automated tests (246 engine, 51 server, 53 web), 3 days from first commit to full 12-team mock drafts, ~60 ms per action. States that it isn't hosted yet and the known 0.7 s gap under simultaneous bids.
   - Big board auction and reveal screenshots from the repo, plus an architecture diagram, in `src/assets/projects/draft-day/`. Links to the public GitHub repo.
+- Logged PRs #5–#7 in this file (PR [#8](https://github.com/evanreynolds1116/PersonalWebsite/pull/8), merged as `8e9e12d`).
+- Added the third real project, Music Junkie ([ConcertApp](https://github.com/evanreynolds1116/ConcertApp)), a social app for logging concerts with setlist.fm search, stats and following (PR [#9](https://github.com/evanreynolds1116/PersonalWebsite/pull/9), merged as `3c83c62`). It replaces the `[Project Three]` placeholder, the last one.
+  - Case study written from the repo's README and commits: setlist.fm search with festival handling, the log, stats and social features, privacy enforced by one database rule, setlist.fm's terms, four key decisions.
+  - Results verified in the repo: 395 automated checks (136 Vitest, 236 pgTAP assertions, 23 API smoke tests), one `can_view` rule for every read, 2 days from scaffold to log, stats and social. States that it isn't deployed yet.
+  - The README's phone screenshots composed side by side (content unchanged) for the cover and a figure, plus an architecture diagram, in `src/assets/projects/music-junkie/`. Links to the public GitHub repo.
+- Dev-server gotcha: a dev server started before a new project file was added rendered that project's cover as a broken page (`LocalImageUsedWrongly`), because it kept a stale image-import map in memory. Production builds were fine. Fix: restart `npm run dev` after adding a project, and avoid running `npm run build` while a dev server is up, since both write to `.astro/`.
+- Domain research: `evanreynolds.dev` is unregistered and recommended; `evanreynolds.com` is taken.
 - Deleted each branch after its PR merged; `main` is the only branch.
 
 ### 2026-10-01
