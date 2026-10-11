@@ -1,35 +1,25 @@
 ---
+import { Picture } from 'astro:assets';
+import photo from '../assets/about/evan-reynolds.jpg';
 import Button from '../components/Button.astro';
 import Container from '../components/Container.astro';
 import CtaBand from '../components/CtaBand.astro';
 import PageHeader from '../components/PageHeader.astro';
-import PromptHeading from '../components/PromptHeading.astro';
 import WindowFrame from '../components/WindowFrame.astro';
 import { site } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Replace with real content. Keep each list to three or four short items.
+// About 150 words, from the resume. Keep it to three short paragraphs.
 const bio = [
-  "[Short story, about 150 words in total. How you got into software and what you've been building since.]",
-  '[What kinds of problems you like most, and the teams or clients you do your best work with.]',
-  "[Something human: what you do when you're not at a keyboard.]",
-];
-
-const howIWork = [
-  '[A working principle, e.g. "Ship small, measure, then iterate."]',
-  '[How you communicate: async updates, written decisions, demos.]',
-  '[What you care about in code review and handoff.]',
-];
-
-const learning = [
-  '[A technology or topic you are learning right now.]',
-  '[A book, course or side project in progress.]',
+  "I'm a software engineer in Nashville. I got into software through Nashville Software School's full-stack program in 2020, then spent two years at Accenture building the pipelines that moved client data into Salesforce, and a year at Momentum Technology shipping backend APIs, where a fraud-detection integration I built drove a 20% revenue increase in its first month.",
+  "Today I'm an Application Engineer at HCA Healthcare and the sole engineer behind Badge Pay, a badge-based payment system used by about 146,000 employees across 250+ facilities and paid through payroll. Most days that means Python, SQL and Airflow, and making sure data moves between systems accurately and on time. In my own time, I build full-stack web apps, like the projects on this site.",
+  "When I'm not at a keyboard, I'm usually on a golf course, playing hockey, or at a concert.",
 ];
 ---
 
 <BaseLayout
   title="About"
-  description={`About ${site.name}: background, how I work and what I'm learning.`}
+  description={`About ${site.name}: background, current work and life outside it.`}
   footerFile="bio.md"
 >
   <Container>
@@ -42,45 +32,20 @@ const learning = [
             <p>{paragraph}</p>
           ))}
         </section>
-
-        <section aria-labelledby="work-title" class="flex flex-col gap-5">
-          <PromptHeading id="work-title" path="~/about" command="cat how-i-work.md" />
-          <ul class="flex flex-col gap-3">
-            {howIWork.map((item) => (
-              <li class="flex gap-3">
-                <span class="font-mono text-accent" aria-hidden="true">
-                  →
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section aria-labelledby="learning-title" class="flex flex-col gap-5">
-          <PromptHeading id="learning-title" path="~/about" command="cat learning.md" />
-          <ul class="flex flex-col gap-3">
-            {learning.map((item) => (
-              <li class="flex gap-3">
-                <span class="font-mono text-accent" aria-hidden="true">
-                  →
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <a href="/uses" class="self-start font-mono text-[15px] text-accent">
-            what I work with: ~/uses →
-          </a>
-        </section>
       </div>
 
-      <!-- Photo: swap the placeholder for an astro:assets <Image> with real alt text. -->
       <aside aria-label="Photo" class="order-first md:order-none">
         <WindowFrame title="~/about/photo.jpg" class="md:sticky md:top-8">
-          <div class="flex aspect-[4/5] max-h-[360px] w-full items-center justify-center bg-bg font-mono text-sm text-muted md:max-h-none">
-            [photo]
-          </div>
+          <!-- Cropped to 4:5, framed on the face; on phones capped in height so the bio follows soon. -->
+          <Picture
+            src={photo}
+            alt={`${site.name} smiling outdoors in a plaid overshirt, in black and white.`}
+            widths={[360, 720, 1080]}
+            sizes="(min-width: 768px) 360px, 100vw"
+            formats={['avif', 'webp']}
+            loading="eager"
+            class="block aspect-[4/5] max-h-[360px] w-full bg-bg object-cover object-[50%_30%] md:max-h-none"
+          />
         </WindowFrame>
       </aside>
     </div>
