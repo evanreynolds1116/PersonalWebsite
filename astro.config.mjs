@@ -16,7 +16,9 @@ export default defineConfig({
   // URLs have no trailing slash (/projects, not /projects/). Emitting projects.html rather than
   // projects/index.html makes Cloudflare Pages serve /projects directly instead of 308-redirecting
   // to /projects/, so links, canonical URLs and the sitemap all point at the served URL.
-  build: { format: 'file' },
+  // The stylesheet (~6 KB gzipped) is inlined into every page so first paint doesn't wait on a
+  // render-blocking CSS request; Astro's CSP hashes the inlined styles.
+  build: { format: 'file', inlineStylesheets: 'always' },
   trailingSlash: 'never',
   integrations: [mdx()],
   security: {
